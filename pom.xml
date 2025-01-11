@@ -44,6 +44,13 @@
             <artifactId>sqlite</artifactId>
             <version>2.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>opencv-platform</artifactId>
+            <version>4.10.0-1.5.11</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -67,7 +74,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                net.abdellahhafid.smartfaceaccess/net.abdellahhafid.smartfaceaccess.HelloApplication
+                                net.abdellahhafid.smartfaceaccess/net.abdellahhafid.smartfaceaccess.Application
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
