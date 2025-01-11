@@ -1,4 +1,4 @@
-package net.abdellahhafid.smartfaceaccess.Services;
+package net.abdellahhafid.smartfaceaccess.services;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.opencv.opencv_java;
