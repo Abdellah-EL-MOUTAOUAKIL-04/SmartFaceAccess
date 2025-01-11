@@ -34,7 +34,7 @@
                      </font></Label>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="emailInput" prefHeight="40.0" prefWidth="300.0" promptText="user@email.com" style="-fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-color: #fff;">
+                        <TextField fx:id="emailInput" prefHeight="40.0" prefWidth="315.0" promptText="user@email.com" style="-fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-color: #fff;">
                            <font>
                               <Font name="Inter SemiBold" size="14.0" />
                            </font>
@@ -59,7 +59,7 @@
                      </font></Label>
                   <AnchorPane prefHeight="40.0" prefWidth="200.0">
                      <children>
-                        <PasswordField fx:id="passwordInput" prefHeight="40.0" prefWidth="300.0" promptText="******" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4;">
+                        <PasswordField fx:id="passwordInput" prefHeight="40.0" prefWidth="315.0" promptText="******" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4;">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -76,16 +76,32 @@
                   </AnchorPane>
                </children>
             </VBox>
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginButtonAction" prefHeight="33.0" prefWidth="315.0" style="-fx-background-color: #6941C6;" text="Login" textFill="WHITE">
-               <padding>
-                  <Insets bottom="6.0" top="6.0" />
-               </padding>
-               <font>
-                  <Font name="Poppins SemiBold" size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+               <children>
+                  <Button fx:id="loginButton" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#loginButtonAction" prefHeight="40.0" prefWidth="315.0" style="-fx-background-color: #6941C6;" text="Login" textFill="WHITE">
+                     <padding>
+                        <Insets bottom="6.0" top="6.0" />
+                     </padding>
+                     <font>
+                        <Font name="Poppins SemiBold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="loginButton1" maxHeight="33.0" maxWidth="315.0" minHeight="40.0" minWidth="315.0" mnemonicParsing="false" onAction="#loginButtonAction" prefHeight="40.0" prefWidth="315.0" style="-fx-background-color: white; -fx-border-color: #D0D5DD; -fx-border-width: 0.5px; -fx-border-radius: 4px;" text="Aller à l'espace client" textFill="#6941c6">
+                     <padding>
+                        <Insets bottom="6.0" top="6.0" />
+                     </padding>
+                     <font>
+                        <Font name="Poppins SemiBold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </VBox>
             <Label fx:id="errorMssg" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="300.0" textFill="#eb0303" />
          </children>
       </VBox>

@@ -9,4 +9,5 @@ module net.abdellahhafid.smartfaceaccess {
     opens net.abdellahhafid.smartfaceaccess.controllers to javafx.fxml;
 
     exports net.abdellahhafid.smartfaceaccess;
+    opens net.abdellahhafid.smartfaceaccess.models.enums to javafx.fxml;
 }
