@@ -67,7 +67,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                net.abdellahhafid.smartfaceaccess/net.abdellahhafid.smartfaceaccess.HelloApplication
+                                net.abdellahhafid.smartfaceaccess/net.abdellahhafid.smartfaceaccess.Application
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

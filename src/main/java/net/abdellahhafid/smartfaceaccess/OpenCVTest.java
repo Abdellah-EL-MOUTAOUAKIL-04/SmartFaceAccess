@@ -1,6 +1,6 @@
 package net.abdellahhafid.smartfaceaccess;
 
-import net.abdellahhafid.smartfaceaccess.Dao.SingletonConnectionDB;
+import net.abdellahhafid.smartfaceaccess.dao.SingletonConnectionDB;
 import org.opencv.core.Core;
 
 public class OpenCVTest {
