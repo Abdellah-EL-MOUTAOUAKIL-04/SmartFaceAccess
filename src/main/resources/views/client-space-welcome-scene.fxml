@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="600.0" maxWidth="1024.0" minHeight="600.0" minWidth="1024.0" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: fff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.abdellahhafid.smartfaceaccess.controllers.ClientSpaceWelcomeSceneController">
+   <children>
+      <Button fx:id="goToAuthenticationButton" contentDisplay="RIGHT" layoutX="817.0" layoutY="8.0" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#goToAuthenticationHandler" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #6941C6; -fx-border-radius: 8px;" text="Se connecter" textFill="WHITE">
+         <padding>
+            <Insets bottom="6.0" top="6.0" />
+         </padding>
+         <font>
+            <Font name="Poppins SemiBold" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView preserveRatio="true">
+               <image>
+                  <Image url="@../assets/images/icons/log-in-01.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <HBox alignment="TOP_RIGHT" layoutY="56.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="517.0" prefWidth="1024.0">
+         <children>
+            <VBox nodeOrientation="LEFT_TO_RIGHT" prefWidth="1009.0" spacing="10.0" HBox.hgrow="SOMETIMES">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <ImageView preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/images/icons/camera-01.png" />
+                           </image>
+                        </ImageView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Camera">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <Canvas fx:id="cameraCanvas" height="457.0" width="457.0" />
+               </children>
+               <HBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="518.0" prefWidth="1532.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="13.0">
+                     <children>
+                        <ImageView>
+                           <image>
+                              <Image url="@../assets/images/icons/facial-recognition-icon.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="#7f56d9" strokeType="OUTSIDE" strokeWidth="0.0" text="Système de Reconnaissance Faciale Client">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="546.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Text>
+                              <ImageView fitHeight="29.0" fitWidth="27.0">
+                                 <image>
+                                    <Image url="@../assets/images/icons/wavehand.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                        <Text fill="#7b7b7b" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour un accès sécurisé, veuillez regarder dans la caméra.">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#7b7b7b" strokeType="OUTSIDE" strokeWidth="0.0" text="Votre visage sera scanné pour vérifier votre identité et permettre l'accès.">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#7b7b7b" strokeType="OUTSIDE" strokeWidth="0.0" text="En cas de problème, merci de contacter notre personnel.">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
