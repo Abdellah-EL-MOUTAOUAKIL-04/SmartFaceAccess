@@ -6,11 +6,16 @@ import javafx.stage.Stage;
 import net.abdellahhafid.smartfaceaccess.constants.FXMLPathConstants;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource(FXMLPathConstants.AUTHENTICATION_SCENE));
+        URL resource = Application.class.getResource(FXMLPathConstants.AUTHENTICATION_SCENE);
+        if (resource == null) {
+            throw new RuntimeException("FXML file not found: " + FXMLPathConstants.AUTHENTICATION_SCENE);
+        }
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("SmartFaceAccess");
         stage.setScene(scene);

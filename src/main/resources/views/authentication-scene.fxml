@@ -89,7 +89,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button fx:id="loginButton1" maxHeight="33.0" maxWidth="315.0" minHeight="40.0" minWidth="315.0" mnemonicParsing="false" onAction="#loginButtonAction" prefHeight="40.0" prefWidth="315.0" style="-fx-background-color: white; -fx-border-color: #D0D5DD; -fx-border-width: 0.5px; -fx-border-radius: 4px;" text="Aller à l'espace client" textFill="#6941c6">
+                  <Button fx:id="goToClientSpaceButton" maxHeight="33.0" maxWidth="315.0" minHeight="40.0" minWidth="315.0" mnemonicParsing="false" onAction="#goToClientSpaceHandler" prefHeight="40.0" prefWidth="315.0" style="-fx-background-color: white; -fx-border-color: #D0D5DD; -fx-border-width: 0.5px; -fx-border-radius: 4px;" text="Aller à l'espace client" textFill="#6941c6">
                      <padding>
                         <Insets bottom="6.0" top="6.0" />
                      </padding>
