@@ -8,7 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.abdellahhafid.smartfaceaccess.constants.FXMLPathConstants;
-import net.abdellahhafid.smartfaceaccess.Models.enums.ToastType;
+import net.abdellahhafid.smartfaceaccess.models.enums.ToastType;
 import net.abdellahhafid.smartfaceaccess.utils.SceneManager;
 import net.abdellahhafid.smartfaceaccess.utils.ToastUtility;
 

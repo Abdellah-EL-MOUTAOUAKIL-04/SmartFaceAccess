@@ -100,7 +100,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         faceRecognizer.predict(faceRegion, predictedLabel, confidence);
 
         // Define a threshold for confidence (this threshold value may need to be adjusted)
-        double threshold = 45.0;  // You can experiment with different threshold values
+        double threshold = 55.0;  // You can experiment with different threshold values
 
         // If the confidence is below the threshold, consider the recognition valid
         if (confidence[0] < threshold) {

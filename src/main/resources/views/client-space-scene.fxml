@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="600.0" maxWidth="1024.0" minHeight="600.0" minWidth="1024.0" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: fff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.abdellahhafid.smartfaceaccess.controllers.ClientSpaceSceneController">
+   <children>
+      <!-- Top Button -->
+      <Button fx:id="goToAuthenticationButton" contentDisplay="RIGHT" layoutX="817.0" layoutY="8.0" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#goToAuthenticationHandler" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #6941C6; -fx-border-radius: 8px;" text="Se connecter" textFill="WHITE">
+         <padding>
+            <Insets bottom="6.0" top="6.0" />
+         </padding>
+         <font>
+            <Font name="Poppins SemiBold" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView preserveRatio="true">
+               <image>
+                  <Image url="@../assets/images/icons/log-in-01.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+
+      <!-- Main Layout -->
+      <HBox alignment="CENTER" layoutY="56.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="517.0" prefWidth="1024.0" spacing="20.0">
+         <children>
+            <!-- Left Section: Camera -->
+            <VBox alignment="TOP_CENTER" prefWidth="470.0" spacing="10.0">
+               <children>
+                  <!-- Camera Title -->
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <ImageView preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/images/icons/camera-01.png" />
+                           </image>
+                        </ImageView>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Camera">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <!-- Camera Feed -->
+                  <Canvas fx:id="cameraCanvas" height="457.0" width="478.0" />
+               </children>
+            </VBox>
+
+            <!-- Right Section: Dynamic Content -->
+            <VBox alignment="CENTER" prefWidth="500.0" spacing="10.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <StackPane fx:id="dynamicContentPane" prefHeight="457.0" prefWidth="470.0" style="-fx-padding: 15px;">
+                  </StackPane>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+   </children>
+</AnchorPane>
