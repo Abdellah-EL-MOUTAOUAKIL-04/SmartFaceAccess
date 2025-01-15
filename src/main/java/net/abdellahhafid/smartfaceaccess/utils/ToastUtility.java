@@ -9,17 +9,13 @@ import net.abdellahhafid.smartfaceaccess.Models.enums.ToastType;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ToastUtility {
 
     public static void showToast(Window owner, String message, ToastType type) {
         try {
-            File fxmlFile = new File("src/main/resources/net/abdellahhafid/smartfaceaccess/views/toast.fxml");
-            if (!fxmlFile.exists()) {
-                throw new IllegalStateException("FXML file not found at: " + fxmlFile.getAbsolutePath());
-            }
-
-            FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(ToastUtility.class.getResource("/views/toast.fxml")));
             StackPane toastRoot = loader.load();
             ToastController controller = loader.getController();
             controller.showToast(message, type);

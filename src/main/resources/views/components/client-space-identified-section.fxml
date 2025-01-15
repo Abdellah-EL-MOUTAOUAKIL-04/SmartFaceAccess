@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT" prefHeight="518.0" prefWidth="1532.0" fx:controller="net.abdellahhafid.smartfaceaccess.controllers.ClientSpaceIdentifiedController">
+    <children>
+        <VBox>
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="13.0">
+                    <children>
+                        <ImageView>
+                            <image>
+                                <Image url="@../../assets/images/icons/facial-recognition-green-icon.png" />
+                            </image>
+                        </ImageView>
+                        <Text fill="#039855" strokeType="OUTSIDE" strokeWidth="0.0" text="Visage identifié">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </HBox>
+                <HBox spacing="130.0">
+                    <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="546.0" spacing="5.0">
+                                    <children>
+                                        <ImageView preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../assets/images/icons/user-01.png" />
+                                            </image>
+                                        </ImageView>
+                                        <HBox alignment="CENTER" spacing="5.0">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nom complet:">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                                <Text fx:id="nomComplet" fill="#667085" strokeType="OUTSIDE" strokeWidth="0.0" text="John Doe">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="546.0" spacing="5.0">
+                                    <children>
+                                        <ImageView preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../assets/images/icons/mail-02.png" />
+                                            </image>
+                                        </ImageView>
+                                        <HBox alignment="CENTER" spacing="5.0">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                                <Text fx:id="email" fill="#667085" strokeType="OUTSIDE" strokeWidth="0.0" text="johndoe@email.com">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="546.0" spacing="5.0">
+                                    <children>
+                                        <ImageView preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../assets/images/icons/phone-02.png" />
+                                            </image>
+                                        </ImageView>
+                                        <HBox alignment="CENTER" spacing="5.0">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Téléphone:">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                                <Text fx:id="telephone" fill="#667085" strokeType="OUTSIDE" strokeWidth="0.0" text="+212 658 880529">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="546.0" spacing="5.0">
+                                    <children>
+                                        <ImageView preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../assets/images/icons/folder-lock.png" />
+                                            </image>
+                                        </ImageView>
+                                        <HBox alignment="CENTER" spacing="5.0">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Statut d'accès:">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                                <Text fx:id="statutAccess" fill="#039855" strokeType="OUTSIDE" strokeWidth="0.0" text="Autorisé">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="546.0" spacing="5.0">
+                                    <children>
+                                        <ImageView preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../assets/images/icons/users-03.png" />
+                                            </image>
+                                        </ImageView>
+                                        <HBox alignment="CENTER" spacing="5.0">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Role:">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                                <Text fx:id="role" fill="#667085" strokeType="OUTSIDE" strokeWidth="0.0" text="Visiteur">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="546.0" spacing="5.0">
+                                    <children>
+                                        <ImageView preserveRatio="true">
+                                            <image>
+                                                <Image url="@../../assets/images/icons/calendar.png" />
+                                            </image>
+                                        </ImageView>
+                                        <HBox alignment="CENTER" spacing="5.0">
+                                            <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Identifié le:">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                                <Text fx:id="dateIdentification" fill="#667085" strokeType="OUTSIDE" strokeWidth="0.0" text="11/01/2025 à 14:30">
+                                                    <font>
+                                                        <Font name="System Bold" size="12.0" />
+                                                    </font>
+                                                </Text>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <ImageView fx:id="avatarImage" fitHeight="183.0" fitWidth="153.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../assets/images/scanning-women.jpg" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>

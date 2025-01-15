@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER_LEFT" prefHeight="518.0" prefWidth="1532.0">
+    <children>
+        <VBox>
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="13.0">
+                    <children>
+                        <ImageView>
+                            <image>
+                                <Image url="@../../assets/images/icons/facial-recognition-icon.png" />
+                            </image>
+                        </ImageView>
+                        <Text fill="#7f56d9" strokeType="OUTSIDE" strokeWidth="0.0" text="Système de Reconnaissance Faciale Client">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </HBox>
+                <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="546.0" spacing="5.0">
+                            <children>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue">
+                                    <font>
+                                        <Font name="System Bold" size="20.0" />
+                                    </font>
+                                </Text>
+                                <ImageView fitHeight="29.0" fitWidth="27.0">
+                                    <image>
+                                        <Image url="@../../assets/images/icons/wavehand.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </HBox>
+                        <Text fill="#7b7b7b" strokeType="OUTSIDE" strokeWidth="0.0" text="Pour un accès sécurisé, veuillez regarder dans la caméra.">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#7b7b7b" strokeType="OUTSIDE" strokeWidth="0.0" text="Votre visage sera scanné pour vérifier votre identité et permettre l'accès.">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#7b7b7b" strokeType="OUTSIDE" strokeWidth="0.0" text="En cas de problème, merci de contacter notre personnel.">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>

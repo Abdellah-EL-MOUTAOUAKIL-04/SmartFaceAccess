@@ -20,9 +20,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         // Load OpenCV library
         Loader.load(opencv_java.class);  // Ensure OpenCV is loaded
         faceRecognizer = LBPHFaceRecognizer.create();
-        // Uncomment the following line to load known faces from the data folder recently commented
-        //loadKnownFaces();
-        new Thread(this::loadKnownFaces).start();
+        loadKnownFaces();
     }
 
     private void loadKnownFaces() {
@@ -102,7 +100,7 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         faceRecognizer.predict(faceRegion, predictedLabel, confidence);
 
         // Define a threshold for confidence (this threshold value may need to be adjusted)
-        double threshold = 45;  // You can experiment with different threshold values
+        double threshold = 55.0;  // You can experiment with different threshold values
 
         // If the confidence is below the threshold, consider the recognition valid
         if (confidence[0] < threshold) {

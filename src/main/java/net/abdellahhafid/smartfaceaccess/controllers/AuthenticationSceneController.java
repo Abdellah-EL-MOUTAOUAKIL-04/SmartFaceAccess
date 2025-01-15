@@ -8,7 +8,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import net.abdellahhafid.smartfaceaccess.constants.FXMLPathConstants;
-import net.abdellahhafid.smartfaceaccess.Models.enums.ToastType;
+import net.abdellahhafid.smartfaceaccess.models.enums.ToastType;
 import net.abdellahhafid.smartfaceaccess.utils.SceneManager;
 import net.abdellahhafid.smartfaceaccess.utils.ToastUtility;
 
@@ -42,6 +42,8 @@ public class AuthenticationSceneController {
         if (email.equals("admin") && password.equals("admin")) {
             errorMssg.setText("Login successful");
             ToastUtility.showToast((Stage) loginButton.getScene().getWindow(), "Login successful", ToastType.SUCCESS);
+            SceneManager sceneManager = new SceneManager((Stage) loginButton.getScene().getWindow());
+            sceneManager.switchScene(FXMLPathConstants.ADMINISTRATOR_SCENE);
         } else {
             errorMssg.setText("Login failed");
             ToastUtility.showToast((Stage) loginButton.getScene().getWindow(), "Login unsuccessful", ToastType.ALERT);
