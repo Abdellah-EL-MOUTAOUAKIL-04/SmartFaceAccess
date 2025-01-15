@@ -36,6 +36,7 @@ public class ClientSpaceWelcomeSceneController {
     public void initialize() {
         imageProcessingService = new ImageProcessingServiceImpl();
         initializeUI();
+        //recently commented
         loadFaceCascade();
         startCameraInitialization();
     }
@@ -77,14 +78,30 @@ public class ClientSpaceWelcomeSceneController {
     }
 
     private void startCameraInitialization() {
+        // Display a message while initializing
+        Platform.runLater(() -> showInitializingMessage("Starting camera..."));
+
+        // Open the camera and start feed in a background thread
         new Thread(() -> {
             videoCapture = new VideoCapture(0); // Open the default camera
             if (videoCapture.isOpened()) {
-                Platform.runLater(this::startCameraFeed);
+                Platform.runLater(() -> {
+                    showInitializingMessage("Camera started.");
+                    startCameraFeed();
+                });
             } else {
                 Platform.runLater(() -> showError("Failed to open the camera."));
             }
         }).start();
+    }
+
+    private void showInitializingMessage(String message) {
+        GraphicsContext gc = cameraCanvas.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, cameraCanvas.getWidth(), cameraCanvas.getHeight());
+        gc.setFill(Color.WHITE);
+        gc.setFont(javafx.scene.text.Font.font("Arial", 16)); // Adjust font size here
+        gc.fillText(message, cameraCanvas.getWidth() / 2 - 90, cameraCanvas.getHeight() / 2);
     }
 
     private void showError(String message) {

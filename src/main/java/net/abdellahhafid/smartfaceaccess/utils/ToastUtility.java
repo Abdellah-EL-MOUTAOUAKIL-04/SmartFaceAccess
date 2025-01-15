@@ -5,7 +5,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Popup;
 import javafx.stage.Window;
 import net.abdellahhafid.smartfaceaccess.controllers.ToastController;
-import net.abdellahhafid.smartfaceaccess.models.enums.ToastType;
+import net.abdellahhafid.smartfaceaccess.Models.enums.ToastType;
 
 import java.io.File;
 import java.io.IOException;
