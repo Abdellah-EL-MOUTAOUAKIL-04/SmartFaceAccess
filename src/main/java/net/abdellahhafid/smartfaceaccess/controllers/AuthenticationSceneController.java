@@ -42,6 +42,8 @@ public class AuthenticationSceneController {
         if (email.equals("admin") && password.equals("admin")) {
             errorMssg.setText("Login successful");
             ToastUtility.showToast((Stage) loginButton.getScene().getWindow(), "Login successful", ToastType.SUCCESS);
+            SceneManager sceneManager = new SceneManager((Stage) loginButton.getScene().getWindow());
+            sceneManager.switchScene(FXMLPathConstants.ADMINISTRATOR_SCENE);
         } else {
             errorMssg.setText("Login failed");
             ToastUtility.showToast((Stage) loginButton.getScene().getWindow(), "Login unsuccessful", ToastType.ALERT);

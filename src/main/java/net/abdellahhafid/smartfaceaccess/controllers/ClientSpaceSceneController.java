@@ -37,6 +37,7 @@ import java.util.TimerTask;
 public class ClientSpaceSceneController {
     @FXML
     private Canvas cameraCanvas;
+
     @FXML
     private Button goToAuthenticationButton;
 
