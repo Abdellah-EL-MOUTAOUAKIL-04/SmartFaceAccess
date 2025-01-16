@@ -181,7 +181,6 @@ public class AdministratorSceneController {
     @FXML
     private Button userInfosAnnulerButton;
 
-    // Add User Pane Controls (Prefixed with ajouterPane)
     @FXML
     private TextField ajouterPaneNomComplet;
 
@@ -248,6 +247,35 @@ public class AdministratorSceneController {
         utilisateurEtageColumn.setCellValueFactory(new PropertyValueFactory<>("etage"));
         utilisateurFonctionneColumn.setCellValueFactory(new PropertyValueFactory<>("fonctionne"));
         utilisateursEtatAccesColumn.setCellValueFactory(new PropertyValueFactory<>("accessStatus"));
+        utilisateursEtatAccesColumn.setCellFactory(column -> new TableCell<Utilisateur, String>() {
+            @Override
+            protected void updateItem(String accessStatus, boolean empty) {
+                super.updateItem(accessStatus, empty);
+
+                if (empty || accessStatus == null) {
+                    setText(null);
+                    getStyleClass().removeAll("access-authorise", "access-refuse", "access-default");
+                } else {
+                    // Remove existing classes
+                    getStyleClass().removeAll("access-authorise", "access-refuse", "access-default");
+
+                    switch (accessStatus) {
+                        case "autorise":
+                            setText("Autorisée");
+                            getStyleClass().add("access-authorise");
+                            break;
+                        case "refuse":
+                            setText("Non Autorisée");
+                            getStyleClass().add("access-refuse");
+                            break;
+                        default:
+                            setText(accessStatus);
+                            getStyleClass().add("access-default");
+                            break;
+                    }
+                }
+            }
+        });
 
         // Bind data to UserTableView
         utilisateursTableView.setItems(usersList);
@@ -263,6 +291,31 @@ public class AdministratorSceneController {
         });
         accueilDateHeureColumn.setCellValueFactory(new PropertyValueFactory<>("accessTime"));
         accueilStatutAccessColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        accueilStatutAccessColumn.setCellFactory(column -> new TableCell<Log, String>() {
+            @Override
+            protected void updateItem(String accessStatus, boolean empty) {
+                super.updateItem(accessStatus, empty);
+                if (empty || accessStatus == null) {
+                    setText("");
+                    setStyle("");
+                } else {
+                    switch (accessStatus) {
+                        case "succeed":
+                            setText("Autorisée");
+                            setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                            break;
+                        case "failed":
+                            setText("Refusée");
+                            setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                            break;
+                        default:
+                            setText(accessStatus);
+                            setStyle("-fx-text-fill: black;");
+                            break;
+                    }
+                }
+            }
+        });
 
         accueilUtilisateurColumn.setCellFactory(column -> new TableCell<Log, Byte[]>() {
             private final ImageView imageView = new ImageView();
