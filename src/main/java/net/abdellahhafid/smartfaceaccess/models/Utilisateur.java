@@ -48,8 +48,8 @@ public class Utilisateur {
         this.email = email;
     }
 
-    public void getPassword(String password) {
-        this.password = password;
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {

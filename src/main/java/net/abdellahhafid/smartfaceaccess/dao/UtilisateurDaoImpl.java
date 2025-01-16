@@ -25,6 +25,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
                 utilisateur.setEtage(resultSet.getInt("etage"));
                 utilisateur.setFonctionne(resultSet.getString("fonctionne"));
                 utilisateur.setAccessStatus(resultSet.getString("access_status"));
+                utilisateur.setPassword(resultSet.getString("password"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,7 +37,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     public void save(Utilisateur utilisateur) {
         Connection connection = SingletonConnectionDB.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO utilisateur (name, email, numero, face_image, etage, fonctionne, access_status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO utilisateur (name, email, numero, face_image, etage, fonctionne, access_status,password) VALUES (?, ?, ?, ?, ?, ?, ?,?)");
             statement.setString(1, utilisateur.getName());
             statement.setString(2, utilisateur.getEmail());
             statement.setString(3, utilisateur.getNumero());
@@ -44,6 +45,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
             statement.setInt(5, utilisateur.getEtage());
             statement.setString(6, utilisateur.getFonctionne());
             statement.setString(7, utilisateur.getAccessStatus());
+            statement.setString(8, utilisateur.getPassword());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,7 +56,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     public void update(Utilisateur utilisateur) {
         Connection connection = SingletonConnectionDB.getConnection();
         try  {
-            PreparedStatement statement = connection.prepareStatement("UPDATE utilisateur SET name = ?, email = ?, numero = ?, face_image = ?, etage = ?, fonctionne = ?, access_status = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE utilisateur SET name = ?, email = ?, numero = ?, face_image = ?, etage = ?, fonctionne = ?, access_status = ?,password=? WHERE id = ?");
             statement.setString(1, utilisateur.getName());
             statement.setString(2, utilisateur.getEmail());
             statement.setString(3, utilisateur.getNumero());
@@ -62,7 +64,8 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
             statement.setInt(5, utilisateur.getEtage());
             statement.setString(6, utilisateur.getFonctionne());
             statement.setString(7, utilisateur.getAccessStatus());
-            statement.setInt(8, utilisateur.getId());
+            statement.setString(8,utilisateur.getPassword());
+            statement.setInt(9, utilisateur.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,6 +100,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
                 utilisateur.setEtage(resultSet.getInt("etage"));
                 utilisateur.setFonctionne(resultSet.getString("fonctionne"));
                 utilisateur.setAccessStatus(resultSet.getString("access_status"));
+                utilisateur.setPassword(resultSet.getString("password"));
                 utilisateurs.add(utilisateur);
             }
         } catch (SQLException e) {
