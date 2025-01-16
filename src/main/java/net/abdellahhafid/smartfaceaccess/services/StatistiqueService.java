@@ -10,4 +10,6 @@ public interface StatistiqueService {
     void update(Statistique statistique);
     void delete(Statistique statistique);
     List<Statistique> findAll();
+    Statistique getTodayStatistique();
+    public Statistique getAllTimeStatistique();
 }

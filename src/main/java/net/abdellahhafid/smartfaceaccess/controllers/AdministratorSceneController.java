@@ -381,21 +381,23 @@ public class AdministratorSceneController {
 
         List<Utilisateur> users=utilisateurService.findAll();
 
-        Statistique statistique= statistiqueService.findById(0);
+        Statistique statistique= statistiqueService.getAllTimeStatistique();
 
-        accueilTotalUsersNumbers.setText(String.valueOf(users.size()));
+        Statistique todayStatistique=statistiqueService.getTodayStatistique();
 
-        accueilTentativeTotalNumber.setText("");
+        accueilTotalUsersNumbers.setText(users.size()+"");
 
-        tentativeTotaleReconnaissanceReussi.setText("");
+        accueilTentativeTotalNumber.setText(statistique.getTotalAttempts()+"");
 
-        tentativeTotaleReconnaissanceEchouée.setText("");
+        tentativeTotaleReconnaissanceReussi.setText(statistique.getSuccessfulAttempts()+"");
 
-        accueilTentativeToday.setText("");
+        tentativeTotaleReconnaissanceEchouée.setText(statistique.getFailedAttempts()+"");
 
-        accueilTentativeAujourdhuiReussi.setText("");
+        accueilTentativeToday.setText(todayStatistique.getTotalAttempts()+"");
 
-        accueilTentativeAujourdhuiEchouees.setText("");
+        accueilTentativeAujourdhuiReussi.setText(todayStatistique.getSuccessfulAttempts()+"");
+
+        accueilTentativeAujourdhuiEchouees.setText(todayStatistique.getFailedAttempts()+"");
     }
 
     void loadLogs() {
