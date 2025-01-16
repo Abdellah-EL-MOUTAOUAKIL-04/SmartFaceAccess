@@ -1257,12 +1257,21 @@
                         <TableView fx:id="utilisateursTableView" minWidth="-Infinity" prefHeight="601.0" prefWidth="952.0" style="-fx-background-color: #fff; -fx-background-radius: 8px;">
                            <columns>
                               <TableColumn fx:id="utilisateurNomColumn" editable="false" prefWidth="100.0" styleClass="tableViewColumn" text="Nom" />
-                              <TableColumn fx:id="utilisateurEmailColumn" editable="false" prefWidth="90.0" style="-fx-font-weight: bold; -fx-text-alignment: center;" styleClass="tableViewColumn" text="Email" />
-                              <TableColumn fx:id="utilisateurTelephoneColumn" editable="false" prefWidth="110.0" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Téléphone" />
-                              <TableColumn fx:id="utilisateurEtageColumn" editable="false" prefWidth="115.199951171875" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Étage" />
-                              <TableColumn fx:id="utilisateurFonctionneColumn" editable="false" prefWidth="115.199951171875" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Fonctionne" />
-                              <TableColumn fx:id="utilisateursEtatAccesColumn" editable="false" prefWidth="115.199951171875" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Etat d'acces" />
-                              <TableColumn fx:id="utilisateurArrowToViewAndModify" editable="false" prefWidth="124.800048828125" styleClass="tableViewColumn" />
+                              <TableColumn fx:id="utilisateurEmailColumn" editable="false" prefWidth="188.80003356933594" style="-fx-font-weight: bold; -fx-text-alignment: center;" styleClass="tableViewColumn" text="Email" />
+                              <TableColumn fx:id="utilisateurTelephoneColumn" editable="false" prefWidth="148.79998779296875" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Téléphone" />
+                              <TableColumn fx:id="utilisateurEtageColumn" editable="false" prefWidth="66.39996337890625" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Étage" />
+                              <TableColumn fx:id="utilisateurFonctionneColumn" editable="false" prefWidth="107.20001220703125" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Fonctionne" />
+                              <TableColumn fx:id="utilisateursEtatAccesColumn" editable="false" prefWidth="201.59991455078125" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Etat d'acces" />
+                              <!-- Modify Action Column -->
+                              <!-- Modify Action Column -->
+                              <TableColumn fx:id="utilisateurModifyColumn" editable="false" minWidth="0.0" prefWidth="69.5999755859375" text="">
+                                 <!-- No text; icon will be set via controller -->
+                              </TableColumn>
+
+                              <!-- Delete Action Column -->
+                              <TableColumn fx:id="utilisateurDeleteColumn" editable="false" minWidth="0.0" prefWidth="68.800048828125" text="">
+                                 <!-- No text; icon will be set via controller -->
+                              </TableColumn>
                            </columns>
                         </TableView>
                      </children>

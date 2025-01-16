@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import net.abdellahhafid.smartfaceaccess.constants.FXMLPathConstants;
 import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
 import net.abdellahhafid.smartfaceaccess.services.UtilisateurService;
@@ -90,6 +91,13 @@ public class AdministratorSceneController {
     @FXML
     private TableColumn<Utilisateur, String> utilisateursEtatAccesColumn;
 
+    @FXML
+    private TableColumn<Utilisateur, String> utilisateurModifyColumn;
+
+    @FXML
+    private TableColumn<Utilisateur, String> utilisateurDeleteColumn;
+
+
     // Other Controls
     @FXML
     private Text accueilTotalUsersNumbers;
@@ -143,6 +151,7 @@ public class AdministratorSceneController {
     @FXML
     private Button ajouterPaneAnnulerButton;
 
+
     // Other Fields
     private final ObservableList<Utilisateur> usersList = FXCollections.observableArrayList();
 
@@ -181,6 +190,12 @@ public class AdministratorSceneController {
         // Bind data to TableView
         utilisateursTableView.setItems(usersList);
 
+        // Initialize Modify Button Column
+        addModifyButtonToTable();
+
+        // Initialize Delete Button Column
+        addDeleteButtonToTable();
+
         // Load data from the service
         loadUsers();
 
@@ -199,6 +214,116 @@ public class AdministratorSceneController {
                 populateUserForm(newSelection);
                 // Optionally, switch to modification pane
                 showModificationPane();
+            }
+        });
+    }
+
+    private void addModifyButtonToTable() {
+        Callback<TableColumn<Utilisateur, String>, TableCell<Utilisateur, String>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Utilisateur, String> call(final TableColumn<Utilisateur, String> param) {
+                final TableCell<Utilisateur, String> cell = new TableCell() {
+
+                    private final ImageView modifyIcon = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/icons/pencil-02.png")));
+                    private final Button btn = new Button();
+
+                    {
+                        modifyIcon.setFitHeight(16);
+                        modifyIcon.setFitWidth(16);
+                        btn.setGraphic(modifyIcon);
+                        btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                        btn.setOnAction((event) -> {
+                            Utilisateur user = (Utilisateur) getTableView().getItems().get(getIndex());
+                            handleModifyUser(user);
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Object item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        utilisateurModifyColumn.setCellFactory(cellFactory);
+    }
+
+    private void addDeleteButtonToTable() {
+        Callback<TableColumn<Utilisateur, String>, TableCell<Utilisateur, String>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Utilisateur, String> call(final TableColumn<Utilisateur, String> param) {
+                final TableCell<Utilisateur, String> cell = new TableCell() {
+
+                    private final ImageView deleteIcon = new ImageView(new Image(getClass().getResourceAsStream("/assets/images/icons/trash-03.png")));
+                    private final Button btn = new Button();
+
+                    {
+                        deleteIcon.setFitHeight(16);
+                        deleteIcon.setFitWidth(16);
+                        btn.setGraphic(deleteIcon);
+                        btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                        btn.setOnAction((event) -> {
+                            Utilisateur user = (Utilisateur) getTableView().getItems().get(getIndex());
+                            handleDeleteUser(user);
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Object item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        utilisateurDeleteColumn.setCellFactory(cellFactory);
+    }
+
+    private void handleModifyUser(Utilisateur user) {
+        // Implement navigation to modify user information
+
+        // Example: Show an information alert (replace with actual logic)
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Modifier Utilisateur");
+        alert.setHeaderText(null);
+        alert.setContentText("Modifier les informations de l'utilisateur: " + user.getName());
+        alert.showAndWait();
+
+
+        // TODO: Navigate to the Modify User page or open a modification dialog
+    }
+
+    private void handleDeleteUser(Utilisateur user) {
+        // Confirm deletion
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmer la Suppression");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Êtes-vous sûr de vouloir supprimer l'utilisateur: " + user.getName() + "?");
+
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                utilisateurService.delete(user);
+                utilisateursTableView.getItems().remove(user);
+
+                // Optionally, show a success alert
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Succès");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Utilisateur supprimé avec succès.");
+                successAlert.showAndWait();
             }
         });
     }
