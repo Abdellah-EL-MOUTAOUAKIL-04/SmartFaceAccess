@@ -17,7 +17,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import net.abdellahhafid.smartfaceaccess.constants.FXMLPathConstants;
+import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
 import net.abdellahhafid.smartfaceaccess.services.ImageProcessingServiceImpl;
+import net.abdellahhafid.smartfaceaccess.services.UtilisateurServiceImpl;
 import net.abdellahhafid.smartfaceaccess.utils.SceneManager;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -31,6 +33,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,7 +54,7 @@ public class ClientSpaceSceneController {
 
     @FXML
     public void initialize() {
-        imageProcessingService = new ImageProcessingServiceImpl();
+        imageProcessingService = new ImageProcessingServiceImpl(new UtilisateurServiceImpl());
         initializeUI();
         loadFaceCascade();
         startCameraInitialization();
@@ -73,7 +76,7 @@ public class ClientSpaceSceneController {
         loadContent("client-space-welcome-section.fxml");
     }
 
-    public void switchToIdentified(String nomComplet, String email, String telephone, String statutAccess, String role, String dateIdentification, String avatarUrl) {
+    public void switchToIdentified(String nomComplet, String email, String telephone, String statutAccess, String role, Date dateIdentification, byte[] avatarUrl) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/components/client-space-identified-section.fxml"));
             Parent identifiedSection = loader.load();
@@ -187,6 +190,8 @@ public class ClientSpaceSceneController {
         return converted;
     }
 
+    private Utilisateur previousUser = null;  // Variable pour mémoriser l'utilisateur précédent
+
     private void detectAndDrawFaces(Mat frame, GraphicsContext gc) {
         Mat grayFrame = new Mat();
         Imgproc.cvtColor(frame, grayFrame, Imgproc.COLOR_BGRA2GRAY);
@@ -201,14 +206,28 @@ public class ClientSpaceSceneController {
             drawFrame(gc, frame);
 
             for (Rect face : facesArray) {
-                boolean recognized = imageProcessingService.recognizeFace(new Mat(frame, face));
+                Utilisateur recognizedUser = imageProcessingService.recognizeFace(new Mat(frame, face));
 
                 double scaleX = cameraCanvas.getWidth() / (double) frame.width();
                 double scaleY = cameraCanvas.getHeight() / (double) frame.height();
 
-                gc.setStroke(recognized ? Color.GREEN : Color.RED);
+                gc.setStroke(recognizedUser != null ? Color.GREEN : Color.RED);
                 gc.setLineWidth(3);
                 gc.strokeRect(face.x * scaleX, face.y * scaleY, face.width * scaleX, face.height * scaleY);
+
+                // Vérification si previousUser est null avant d'effectuer la comparaison
+                if (recognizedUser != null) {
+                    if (previousUser == null || recognizedUser.getId() != previousUser.getId()) {
+                        previousUser = recognizedUser;
+                        switchToIdentified(recognizedUser.getName(), recognizedUser.getEmail(), recognizedUser.getNumero(), recognizedUser.getAccessStatus(), recognizedUser.getFonctionne(), new Date(System.currentTimeMillis()), recognizedUser.getFaceImage());
+                        System.out.println("switchToIdentified");
+                    }
+                } else if (previousUser != null) {
+                    // Aucun utilisateur reconnu mais un utilisateur précédent est stocké
+                    switchToUnidentified();
+                    previousUser = null;  // Réinitialiser l'utilisateur précédent
+                    System.out.println("switchToUnidentified");
+                }
             }
         });
     }

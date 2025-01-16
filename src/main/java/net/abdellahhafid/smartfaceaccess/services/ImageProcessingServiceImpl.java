@@ -2,113 +2,115 @@ package net.abdellahhafid.smartfaceaccess.services;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.opencv.opencv_java;
-import org.opencv.core.Mat;
 import org.opencv.core.CvType;
-import org.opencv.face.LBPHFaceRecognizer;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.face.LBPHFaceRecognizer;
+import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ImageProcessingServiceImpl implements ImageProcessingService {
 
-    private LBPHFaceRecognizer faceRecognizer;
+    private final LBPHFaceRecognizer faceRecognizer;
+    private final UtilisateurService utilisateurService;
 
-    public ImageProcessingServiceImpl() {
-        // Load OpenCV library
-        Loader.load(opencv_java.class);  // Ensure OpenCV is loaded
-        faceRecognizer = LBPHFaceRecognizer.create();
+    public ImageProcessingServiceImpl(UtilisateurService utilisateurService) {
+        // Charger OpenCV
+        Loader.load(opencv_java.class);
+        this.faceRecognizer = LBPHFaceRecognizer.create();
+        this.utilisateurService = utilisateurService;
         loadKnownFaces();
     }
 
     private void loadKnownFaces() {
-        String dataFolderPath = "data"; // Folder containing the images
-        File folder = new File(dataFolderPath);
-        File[] files = folder.listFiles();
+        List<Utilisateur> utilisateurs = utilisateurService.findAll();
 
-        if (files == null || files.length == 0) {
-            System.err.println("No images found in the data folder.");
+        if (utilisateurs.isEmpty()) {
+            System.err.println("Aucun utilisateur trouvé dans la base de données.");
             return;
         }
 
-        List<Mat> images = new ArrayList<>();
-        List<Integer> labels = new ArrayList<>();
+        List<Mat> imagesList = new ArrayList<>();
+        Mat labelsMat = new Mat(utilisateurs.size(), 1, CvType.CV_32SC1);
+        int labelIndex = 0;
 
-        for (File file : files) {
-            if (file.isFile() && file.getName().endsWith(".jpg")) {
-                // Extract the filename and attempt to extract the label
-                String fileName = file.getName();
-                String labelString = fileName.split("\\.")[0]; // Assuming the filename is the label
-
-                try {
-                    // Check if the label string can be parsed as an integer
-                    int label = Integer.parseInt(labelString); // This works if filenames are numeric like "1.jpg"
-
-                    Mat img = Imgcodecs.imread(file.getAbsolutePath(), Imgcodecs.IMREAD_GRAYSCALE);
-                    if (img.empty()) {
-                        System.err.println("Failed to load image: " + fileName);
-                        continue; // Skip empty images
-                    }
-
-                    Imgproc.equalizeHist(img, img); // Enhance image quality
-                    images.add(img);
-                    labels.add(label);
-
-                    System.out.println("Loaded image: " + fileName + " with label: " + label);
-                } catch (NumberFormatException e) {
-                    // Handle non-numeric labels (e.g., filenames with other formats)
-                    System.err.println("Skipping file with invalid or non-numeric label: " + fileName);
-                    continue; // Skip files that don't have valid numeric labels
-                }
+        for (Utilisateur utilisateur : utilisateurs) {
+            byte[] faceBlob = utilisateur.getFaceImage();
+            if (faceBlob == null || faceBlob.length == 0) {
+                System.err.println("L'utilisateur avec ID " + utilisateur.getId() + " n'a pas d'image.");
+                continue;
             }
+
+            Mat faceImage = convertBlobToMat(faceBlob);
+            if (faceImage.empty()) {
+                System.err.println("Impossible de charger l'image de l'utilisateur avec ID " + utilisateur.getId());
+                continue;
+            }
+
+            // Prétraitement de l'image
+            Imgproc.equalizeHist(faceImage, faceImage);
+
+            // Ajouter l'image et son label
+            imagesList.add(faceImage);
+            labelsMat.put(labelIndex, 0, utilisateur.getId());
+            labelIndex++;
+
+            System.out.println("Visage de l'utilisateur avec ID " + utilisateur.getId() + " chargé.");
         }
 
-        if (images.isEmpty()) {
-            System.err.println("No valid images were loaded.");
+        // Mise à jour du modèle de reconnaissance
+        if (imagesList.isEmpty()) {
+            System.err.println("Aucune image valide trouvée pour l'entraînement.");
             return;
         }
 
-        // Convert labels list to a Mat object
-        Mat labelsMat = new Mat(labels.size(), 1, CvType.CV_32SC1);
-        for (int i = 0; i < labels.size(); i++) {
-            labelsMat.put(i, 0, labels.get(i));
-        }
-
-        // Train the recognizer
-        faceRecognizer.train(images, labelsMat);
-        System.out.println("Training complete. Total samples: " + images.size());
+        faceRecognizer.train(imagesList, labelsMat);
     }
 
-    // Method to recognize face from the captured image and return the person's ID if recognized
-    public boolean recognizeFace(Mat faceRegion) {
-        if (faceRegion == null || faceRegion.empty()) {
-            System.err.println("Provided face region is empty or null.");
-            return false; // Return false if the face region is invalid
+    public Utilisateur recognizeFace(Mat faceRegion) {
+        if (faceRegion.empty()) {
+            System.err.println("La région du visage est vide ou invalide.");
+            return null;
         }
 
-        // Convert the image to grayscale
-        Imgproc.cvtColor(faceRegion, faceRegion, Imgproc.COLOR_BGR2GRAY);
+        // Prétraiter l'image du visage
+        Mat preprocessedFace = preprocessFace(faceRegion);
 
-        // Equalize the histogram for better contrast
-        Imgproc.equalizeHist(faceRegion, faceRegion);
-
-        // Predict the label for the face image and get the confidence (distance)
+        // Effectuer la prédiction
         int[] predictedLabel = new int[1];
         double[] confidence = new double[1];
-        faceRecognizer.predict(faceRegion, predictedLabel, confidence);
+        faceRecognizer.predict(preprocessedFace, predictedLabel, confidence);
 
-        // Define a threshold for confidence (this threshold value may need to be adjusted)
-        double threshold = 55.0;  // You can experiment with different threshold values
+        double threshold = 55.0; // Ajuster le seuil de confiance selon vos besoins
 
-        // If the confidence is below the threshold, consider the recognition valid
         if (confidence[0] < threshold) {
-            System.out.println("Face recognized with label: " + predictedLabel[0] + " with confidence: " + confidence[0]);
-            return true; // Return true if the face is recognized
+            System.out.println("Visage reconnu avec ID : " + predictedLabel[0] + " et confiance : " + confidence[0]);
+            return utilisateurService.findById(predictedLabel[0]);
         } else {
-            System.out.println("Face not recognized. Confidence: " + confidence[0]);
-            return false; // Return false if the confidence is too low (not recognized)
+            System.out.println("Visage non reconnu. Confiance : " + confidence[0]);
+            return null;
         }
+    }
+
+    private Mat preprocessFace(Mat faceRegion) {
+        // Convertir l'image en niveaux de gris et égaliser l'histogramme
+        Mat grayFace = new Mat();
+        Imgproc.cvtColor(faceRegion, grayFace, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.equalizeHist(grayFace, grayFace);
+        return grayFace;
+    }
+
+    private Mat convertBlobToMat(byte[] blob) {
+        // Conversion d'un tableau d'octets en Mat
+        MatOfByte matOfByte = new MatOfByte(blob);
+        Mat decodedImage = Imgcodecs.imdecode(matOfByte, Imgcodecs.IMREAD_GRAYSCALE);
+        if (decodedImage.empty()) {
+            System.err.println("Erreur lors du décodage de l'image.");
+        }
+        return decodedImage;
     }
 }

@@ -8,7 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
 import net.abdellahhafid.smartfaceaccess.services.ImageProcessingServiceImpl;
+import net.abdellahhafid.smartfaceaccess.services.UtilisateurServiceImpl;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
@@ -34,7 +36,7 @@ public class ClientSpaceWelcomeSceneController {
 
     @FXML
     public void initialize() {
-        imageProcessingService = new ImageProcessingServiceImpl();
+        imageProcessingService = new ImageProcessingServiceImpl(new UtilisateurServiceImpl());
         initializeUI();
         //recently commented
         loadFaceCascade();
@@ -156,12 +158,12 @@ public class ClientSpaceWelcomeSceneController {
             drawFrame(gc, frame);
 
             for (Rect face : facesArray) {
-                boolean recognized = imageProcessingService.recognizeFace(new Mat(frame, face));
+                Utilisateur recognizedUser = imageProcessingService.recognizeFace(new Mat(frame, face));
 
                 double scaleX = cameraCanvas.getWidth() / (double) frame.width();
                 double scaleY = cameraCanvas.getHeight() / (double) frame.height();
 
-                gc.setStroke(recognized ? Color.GREEN : Color.RED);
+                gc.setStroke(recognizedUser!=null ? Color.GREEN : Color.RED);
                 gc.setLineWidth(3);
                 gc.strokeRect(face.x * scaleX, face.y * scaleY, face.width * scaleX, face.height * scaleY);
             }
