@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -23,7 +24,7 @@
 
 <BorderPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.abdellahhafid.smartfaceaccess.controllers.AdministratorSceneController">
    <left>
-      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="200.0" spacing="330.0" style="-fx-background-color: #6941C6;" stylesheets="@../../../../../gestion-college-maven-main/src/main/resources/styles/BackofficeSceneStyles.css" BorderPane.alignment="CENTER">
+      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="200.0" spacing="330.0" style="-fx-background-color: #6941C6;" stylesheets="@../styles/BackofficeSceneStyles.css" BorderPane.alignment="CENTER">
          <children>
             <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="168.0">
                <children>
@@ -179,7 +180,7 @@
    <center>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="affectationPane" layoutX="40.0" layoutY="20.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F5F5F5; -fx-border-radius: 10; -fx-border-width: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Pane fx:id="utilisateurInfosModificationPane" layoutX="40.0" layoutY="20.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F5F5F5; -fx-border-radius: 10; -fx-border-width: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox alignment="CENTER_LEFT" layoutX="24.0" layoutY="16.0" prefHeight="30.0" prefWidth="87.0">
                      <children>
@@ -379,6 +380,297 @@
                         </HBox>
                      </children>
                   </VBox>
+               </children>
+            </Pane>
+
+            <Pane fx:id="parametresPane" layoutX="30.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F5F5F5; -fx-border-radius: 10; -fx-border-width: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" layoutX="24.0" layoutY="16.0" prefHeight="30.0" prefWidth="87.0">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/images/icons/_Breadcrumb_button_base.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/images/icons/chevron-right.png" />
+                           </image>
+                        </ImageView>
+                        <Text fill="#475467" strokeType="OUTSIDE" strokeWidth="0.0" text="Paramètres">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="2.0" />
+                           </HBox.margin>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <VBox layoutX="24.0" layoutY="80.0" prefHeight="200.0" prefWidth="952.0" spacing="16.0">
+                     <children>
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="485.8" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <VBox prefHeight="40.0" prefWidth="275.0" spacing="4.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Informations personnelles">
+                                       <font>
+                                          <Font name="Inter SemiBold" size="16.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#475467" strokeType="OUTSIDE" strokeWidth="0.0" text="Mettez à jour vos données personnelles ici.">
+                                       <font>
+                                          <Font name="Inter Light" size="13.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="194.0" spacing="16.0">
+                                 <children>
+                                    <Button fx:id="annulerButtonParametres" mnemonicParsing="false" onAction="#handleCancelParametresChanges" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;" text="Annuler" textAlignment="CENTER" textFill="#344054">
+                                       <font>
+                                          <Font name="Inter Medium" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="sauvegarderButtonInfosParametres" mnemonicParsing="false" onAction="#handleSauvegarderButtonInfosParameters" style="-fx-background-color: #7F56D9; -fx-background-radius: 4px; -fx-border-radius: 4px;" text="Sauvegarder" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font name="Inter Medium" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" />
+                           </padding>
+                        </HBox>
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom" wrappingWidth="275.0">
+                                 <font>
+                                    <Font name="Inter Medium" size="13.0" />
+                                 </font>
+                              </Text>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
+                                 <children>
+                                    <TextField fx:id="nomFieldParametres" prefHeight="34.0" prefWidth="190.0" promptText="Nom" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="Inter Bold" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                    <TextField fx:id="prenomFieldParametres" prefHeight="34.0" prefWidth="190.0" promptText="Prenom" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="Inter Bold" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" />
+                           </padding>
+                        </HBox>
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Telephone" wrappingWidth="275.0">
+                                 <font>
+                                    <Font name="Inter Medium" size="13.0" />
+                                 </font>
+                              </Text>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
+                                 <children>
+                                    <TextField fx:id="telephoneFieldParametres" prefHeight="34.0" prefWidth="396.0" promptText="+212 674-389348" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="Inter Bold" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" />
+                           </padding>
+                        </HBox>
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de naissance" wrappingWidth="275.0">
+                                 <font>
+                                    <Font name="Inter Medium" size="13.0" />
+                                 </font>
+                              </Text>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
+                                 <children>
+                                    <DatePicker fx:id="dateBirthDatePickerParametres" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="396.0" promptText="07/19/2002" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-border-image-insets: 0; -fx-background-insets: 0;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox layoutX="24.0" layoutY="380.0" prefHeight="200.0" prefWidth="952.0" spacing="16.0">
+                     <children>
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="311.4" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="448.6" spacing="4.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sécurité">
+                                       <font>
+                                          <Font name="Inter SemiBold" size="16.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#475467" strokeType="OUTSIDE" strokeWidth="0.0" text="Mettez à jour votre adresse e-mail et votre mot de passe ici.">
+                                       <font>
+                                          <Font name="Inter Light" size="13.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="194.0" spacing="16.0">
+                                 <children>
+                                    <Button fx:id="annulerButtonSecurityParametres" mnemonicParsing="false" onAction="#handleCancelParametresChanges" prefHeight="34.0" prefWidth="85.0" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;" text="Annuler" textAlignment="CENTER" textFill="#344054">
+                                       <font>
+                                          <Font name="Inter Medium" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="sauvegarderButtonSecurityParametres" mnemonicParsing="false" onAction="#handleSauvegarderButtonSecurityParameters" prefHeight="35.0" prefWidth="104.0" style="-fx-background-color: #7F56D9; -fx-background-radius: 4px; -fx-border-radius: 4px;" text="Sauvegarder" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font name="Inter Medium" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" />
+                           </padding>
+                        </HBox>
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="275.0">
+                                 <font>
+                                    <Font name="Inter Medium" size="13.0" />
+                                 </font>
+                              </Text>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
+                                 <children>
+                                    <TextField fx:id="emailFieldParametres" prefHeight="34.0" prefWidth="396.0" promptText="nom@email.com" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="Inter Bold" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" />
+                           </padding>
+                        </HBox>
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0">
+                           <children>
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Ancien mot de passe" wrappingWidth="275.0">
+                                 <font>
+                                    <Font name="Inter Medium" size="13.0" />
+                                 </font>
+                              </Text>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
+                                 <children>
+                                    <TextField fx:id="oldPasswordParametres" prefHeight="34.0" prefWidth="396.0" promptText="********" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="Inter Bold" size="13.0" />
+                                       </font>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+                           <children>
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Nouveau mot de passe" wrappingWidth="275.0">
+                                 <font>
+                                    <Font name="Inter Medium" size="13.0" />
+                                 </font>
+                              </Text>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
+                                 <children>
+                                    <TextField fx:id="newPasswordParametres" prefHeight="34.0" prefWidth="396.0" promptText="********" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
+                                       <padding>
+                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="Inter Bold" size="13.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="16.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Label fx:id="errorPasswordUpdate" layoutX="351.0" layoutY="646.0" prefHeight="34.0" prefWidth="396.0" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
             <Pane fx:id="accueilPane" layoutX="20.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F5F5F5; -fx-border-radius: 10; -fx-border-width: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -694,11 +986,12 @@
                   </VBox>
                </children>
             </Pane>
-            <Pane fx:id="parametresPane" layoutX="30.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F5F5F5; -fx-border-radius: 10; -fx-border-width: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Pane fx:id="ajouterUtilisateurPane" layoutX="40.0" layoutY="20.0" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #F5F5F5; -fx-border-radius: 10; -fx-border-width: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" layoutX="24.0" layoutY="16.0" prefHeight="30.0" prefWidth="87.0">
+                  <!-- Breadcrumb Navigation -->
+                  <HBox alignment="CENTER_LEFT" layoutX="24.0" layoutY="16.0" prefHeight="30.0" prefWidth="300.0">
                      <children>
-                        <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/images/icons/_Breadcrumb_button_base.png" />
                            </image>
@@ -708,7 +1001,7 @@
                               <Image url="@../assets/images/icons/chevron-right.png" />
                            </image>
                         </ImageView>
-                        <Text fill="#475467" strokeType="OUTSIDE" strokeWidth="0.0" text="Paramètres">
+                        <Text fill="#475467" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter un utilisateur">
                            <font>
                               <Font name="Inter Regular" size="14.0" />
                            </font>
@@ -718,18 +1011,21 @@
                         </Text>
                      </children>
                   </HBox>
-                  <VBox layoutX="24.0" layoutY="80.0" prefHeight="200.0" prefWidth="952.0" spacing="16.0">
+
+                  <!-- Main Content -->
+                  <VBox layoutX="24.0" layoutY="60.0" prefHeight="520.0" prefWidth="952.0" spacing="16.0">
                      <children>
-                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="485.8" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+                        <!-- Header Section -->
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="350.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
                            <children>
                               <VBox prefHeight="40.0" prefWidth="275.0" spacing="4.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Informations personnelles">
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter un utilisateur">
                                        <font>
                                           <Font name="Inter SemiBold" size="16.0" />
                                        </font>
                                     </Text>
-                                    <Text fill="#475467" strokeType="OUTSIDE" strokeWidth="0.0" text="Mettez à jour vos données personnelles ici.">
+                                    <Text fill="#475467" strokeType="OUTSIDE" strokeWidth="0.0" text="Remplissez les informations nécessaires pour ajouter un nouvel utilisateur.">
                                        <font>
                                           <Font name="Inter Light" size="13.0" />
                                        </font>
@@ -738,7 +1034,7 @@
                               </VBox>
                               <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="194.0" spacing="16.0">
                                  <children>
-                                    <Button fx:id="annulerButtonParametres" mnemonicParsing="false" onAction="#handleCancelParametresChanges" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;" text="Annuler" textAlignment="CENTER" textFill="#344054">
+                                    <Button fx:id="ajouterPaneAnnulerButton" mnemonicParsing="false" onAction="#cancelAjouterUtilisateurHandler" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;" text="Annuler" textAlignment="CENTER" textFill="#344054">
                                        <font>
                                           <Font name="Inter Medium" size="13.0" />
                                        </font>
@@ -749,7 +1045,7 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </Button>
-                                    <Button fx:id="sauvegarderButtonInfosParametres" mnemonicParsing="false" onAction="#handleSauvegarderButtonInfosParameters" style="-fx-background-color: #7F56D9; -fx-background-radius: 4px; -fx-border-radius: 4px;" text="Sauvegarder" textAlignment="CENTER" textFill="WHITE">
+                                    <Button fx:id="ajouterPaneSauvegarderButton" mnemonicParsing="false" onAction="#handleAjouterPaneSauvegarder" style="-fx-background-color: #7F56D9; -fx-background-radius: 4px; -fx-border-radius: 4px;" text="Sauvegarder" textAlignment="CENTER" textFill="WHITE">
                                        <font>
                                           <Font name="Inter Medium" size="13.0" />
                                        </font>
@@ -767,34 +1063,22 @@
                               <Insets bottom="16.0" />
                            </padding>
                         </HBox>
-                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+
+                        <!-- User Information Form -->
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="450.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
                            <children>
-                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom" wrappingWidth="275.0">
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Image de l'utilisateur" wrappingWidth="275.0">
                                  <font>
                                     <Font name="Inter Medium" size="13.0" />
                                  </font>
                               </Text>
-                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="200.0" spacing="16.0">
                                  <children>
-                                    <TextField fx:id="nomFieldParametres" prefHeight="34.0" prefWidth="190.0" promptText="Nom" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                       <padding>
-                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
-                                       </padding>
-                                       <font>
-                                          <Font name="Inter Bold" size="13.0" />
-                                       </font>
-                                    </TextField>
-                                    <TextField fx:id="prenomFieldParametres" prefHeight="34.0" prefWidth="190.0" promptText="Prenom" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
-                                       <padding>
-                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
-                                       </padding>
-                                       <font>
-                                          <Font name="Inter Bold" size="13.0" />
-                                       </font>
-                                    </TextField>
+                                    <ImageView fx:id="ajouterPaneAvatar" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../assets/images/default.png" />
+                                       </image>
+                                    </ImageView>
                                  </children>
                               </HBox>
                            </children>
@@ -802,19 +1086,18 @@
                               <Insets bottom="16.0" />
                            </padding>
                         </HBox>
-                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+
+                        <!-- Full Name Field -->
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0">
                            <children>
-                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Telephone" wrappingWidth="275.0">
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom complet" wrappingWidth="275.0">
                                  <font>
                                     <Font name="Inter Medium" size="13.0" />
                                  </font>
                               </Text>
                               <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
                                  <children>
-                                    <TextField fx:id="telephoneFieldParametres" prefHeight="34.0" prefWidth="396.0" promptText="+212 674-389348" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
+                                    <TextField fx:id="ajouterPaneNomComplet" prefHeight="34.0" prefWidth="396.0" promptText="Nom complet" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
                                        <padding>
                                           <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
                                        </padding>
@@ -825,79 +1108,10 @@
                                  </children>
                               </HBox>
                            </children>
-                           <padding>
-                              <Insets bottom="16.0" />
-                           </padding>
                         </HBox>
-                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
-                           <children>
-                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de naissance" wrappingWidth="275.0">
-                                 <font>
-                                    <Font name="Inter Medium" size="13.0" />
-                                 </font>
-                              </Text>
-                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
-                                 <children>
-                                    <DatePicker fx:id="dateBirthDatePickerParametres" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="396.0" promptText="07/19/2002" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-border-image-insets: 0; -fx-background-insets: 0;" />
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets bottom="16.0" />
-                           </padding>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox layoutX="24.0" layoutY="380.0" prefHeight="200.0" prefWidth="952.0" spacing="16.0">
-                     <children>
-                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="311.4" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
-                           <children>
-                              <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="448.6" spacing="4.0">
-                                 <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sécurité">
-                                       <font>
-                                          <Font name="Inter SemiBold" size="16.0" />
-                                       </font>
-                                    </Text>
-                                    <Text fill="#475467" strokeType="OUTSIDE" strokeWidth="0.0" text="Mettez à jour votre adresse e-mail et votre mot de passe ici.">
-                                       <font>
-                                          <Font name="Inter Light" size="13.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </VBox>
-                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="194.0" spacing="16.0">
-                                 <children>
-                                    <Button fx:id="annulerButtonParametres" mnemonicParsing="false" onAction="#handleCancelParametresChanges" prefHeight="34.0" prefWidth="85.0" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;" text="Annuler" textAlignment="CENTER" textFill="#344054">
-                                       <font>
-                                          <Font name="Inter Medium" size="13.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
-                                       </padding>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </Button>
-                                    <Button fx:id="sauvegarderButtonSecurityParametres" mnemonicParsing="false" onAction="#handleSauvegarderButtonSecurityParameters" prefHeight="35.0" prefWidth="104.0" style="-fx-background-color: #7F56D9; -fx-background-radius: 4px; -fx-border-radius: 4px;" text="Sauvegarder" textAlignment="CENTER" textFill="WHITE">
-                                       <font>
-                                          <Font name="Inter Medium" size="13.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
-                                       </padding>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets bottom="16.0" />
-                           </padding>
-                        </HBox>
-                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+
+                        <!-- Email Field -->
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0">
                            <children>
                               <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" wrappingWidth="275.0">
                                  <font>
@@ -906,10 +1120,7 @@
                               </Text>
                               <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
                                  <children>
-                                    <TextField fx:id="emailFieldParametres" prefHeight="34.0" prefWidth="396.0" promptText="nom@email.com" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
+                                    <TextField fx:id="ajouterPaneEmail" prefHeight="34.0" prefWidth="396.0" promptText="Email" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
                                        <padding>
                                           <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
                                        </padding>
@@ -920,23 +1131,19 @@
                                  </children>
                               </HBox>
                            </children>
-                           <padding>
-                              <Insets bottom="16.0" />
-                           </padding>
                         </HBox>
+
+                        <!-- Telephone Field -->
                         <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0">
                            <children>
-                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Ancien mot de passe" wrappingWidth="275.0">
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Téléphone" wrappingWidth="275.0">
                                  <font>
                                     <Font name="Inter Medium" size="13.0" />
                                  </font>
                               </Text>
                               <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
                                  <children>
-                                    <TextField fx:id="oldPasswordParametres" prefHeight="34.0" prefWidth="396.0" promptText="********" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
+                                    <TextField fx:id="ajouterPaneTelephone" prefHeight="34.0" prefWidth="396.0" promptText="Téléphone" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
                                        <padding>
                                           <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
                                        </padding>
@@ -948,26 +1155,52 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
+
+                        <!-- Date of Birth Field -->
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0">
                            <children>
-                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Nouveau mot de passe" wrappingWidth="275.0">
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de naissance" wrappingWidth="275.0">
                                  <font>
                                     <Font name="Inter Medium" size="13.0" />
                                  </font>
                               </Text>
                               <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
                                  <children>
-                                    <TextField fx:id="newPasswordParametres" prefHeight="34.0" prefWidth="396.0" promptText="********" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;">
+                                    <DatePicker fx:id="ajouterPaneDateNaissance" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="396.0" promptText="JJ/MM/AAAA" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-border-image-insets: 0; -fx-background-insets: 0;" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+
+                        <!-- Function ComboBox -->
+                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0">
+                           <children>
+                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Fonction" wrappingWidth="275.0">
+                                 <font>
+                                    <Font name="Inter Medium" size="13.0" />
+                                 </font>
+                              </Text>
+                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
+                                 <children>
+                                    <ComboBox fx:id="ajouterPaneFonction" prefWidth="396.0" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px;" styleClass="combo-box">
                                        <padding>
-                                          <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+                                          <Insets bottom="4.0" left="5.0" right="5.0" top="4.0" />
                                        </padding>
-                                       <font>
-                                          <Font name="Inter Bold" size="13.0" />
-                                       </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
-                                    </TextField>
+                                       <!-- Define the items within the ComboBox -->
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="gardien" />
+                                             <String fx:value="habitant" />
+                                             <String fx:value="femme de menage" />
+                                          </FXCollections>
+                                       </items>
+                                    </ComboBox>
                                  </children>
                               </HBox>
                            </children>
@@ -977,14 +1210,9 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Label fx:id="errorPasswordUpdate" layoutX="351.0" layoutY="646.0" prefHeight="34.0" prefWidth="396.0" textFill="RED">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
                </children>
             </Pane>
-            <Pane fx:id="professeursPane" layoutX="30.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F5F5F5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Pane fx:id="utilisateursPane" layoutX="30.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F5F5F5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <VBox layoutX="24.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="598.0" prefWidth="954.0" style="-fx-background-color: #fff; -fx-background-radius: 8px; -fx-border-color: #EDEEF0; -fx-border-radius: 8px;">
                      <children>
@@ -998,7 +1226,7 @@
                               <HBox prefHeight="26.0" prefWidth="460.0" spacing="16.0">
                                  <children>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                    <Button fx:id="ajouterUtilisateurButton" alignment="CENTER" graphicTextGap="12.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleAjouterUtilisateur" prefWidth="168.0" style="-fx-border-radius: 8px;" text="Ajouter" textFill="#f4ebff">
+                                    <Button fx:id="ajouterUtilisateurButton" alignment="CENTER" graphicTextGap="12.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleAjouterUtilisateur" prefWidth="168.0" style="-fx-border-radius: 8px;" styleClass="sideBarButton" text="Ajouter" textFill="#f4ebff">
                                        <padding>
                                           <Insets bottom="6.0" left="10.0" right="12.0" top="6.0" />
                                        </padding>
@@ -1015,10 +1243,6 @@
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
-                                       <styleClass>
-                                          <String fx:value="sideBarButton" />
-                                          <String fx:value="active" />
-                                       </styleClass>
                                     </Button>
                                  </children>
                               </HBox>
@@ -1032,14 +1256,13 @@
                         </HBox>
                         <TableView fx:id="utilisateursTableView" minWidth="-Infinity" prefHeight="601.0" prefWidth="952.0" style="-fx-background-color: #fff; -fx-background-radius: 8px;">
                            <columns>
-                              <TableColumn fx:id="utilisateurPrenomColumn" editable="false" prefWidth="110.0" styleClass="tableViewColumn" text="Prénom" />
                               <TableColumn fx:id="utilisateurNomColumn" editable="false" prefWidth="100.0" styleClass="tableViewColumn" text="Nom" />
                               <TableColumn fx:id="utilisateurEmailColumn" editable="false" prefWidth="90.0" style="-fx-font-weight: bold; -fx-text-alignment: center;" styleClass="tableViewColumn" text="Email" />
                               <TableColumn fx:id="utilisateurTelephoneColumn" editable="false" prefWidth="110.0" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Téléphone" />
-                              <TableColumn fx:id="utilisateurEtageColumn" editable="false" prefWidth="200.0" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Étage" />
-                              <TableColumn fx:id="professeursEditActionColumn" editable="false" prefWidth="40.0" styleClass="tableViewColumn" />
-                              <TableColumn fx:id="professeursDeleteActionColumn" editable="false" prefWidth="40.0" styleClass="tableViewColumn" />
-                              <TableColumn fx:id="professeursVoirActionColumn" editable="false" prefWidth="40.0" styleClass="tableViewColumn" />
+                              <TableColumn fx:id="utilisateurEtageColumn" editable="false" prefWidth="115.199951171875" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Étage" />
+                              <TableColumn fx:id="utilisateurFonctionneColumn" editable="false" prefWidth="115.199951171875" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Fonctionne" />
+                              <TableColumn fx:id="utilisateursEtatAccesColumn" editable="false" prefWidth="115.199951171875" style="-fx-font-weight: bold;" styleClass="tableViewColumn" text="Etat d'acces" />
+                              <TableColumn fx:id="utilisateurArrowToViewAndModify" editable="false" prefWidth="124.800048828125" styleClass="tableViewColumn" />
                            </columns>
                         </TableView>
                      </children>
