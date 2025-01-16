@@ -32,6 +32,21 @@
   -fx-background-color: #9975e4;
 }
 
+.access-authorise {
+  -fx-text-fill: #027a48;
+  -fx-font-weight: bold;
+}
+
+.access-refuse {
+  -fx-text-fill: #d92d20;
+  -fx-font-weight: bold;
+}
+
+.access-default {
+  -fx-text-fill: black;
+}
+
+
 /* TableViews */
 .table-view {
   -fx-background-color: transparent;
