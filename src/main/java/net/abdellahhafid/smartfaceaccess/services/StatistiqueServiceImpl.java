@@ -6,6 +6,7 @@ import net.abdellahhafid.smartfaceaccess.dao.StatistiqueDaoImpl;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class StatistiqueServiceImpl implements StatistiqueService {
@@ -52,10 +53,19 @@ public class StatistiqueServiceImpl implements StatistiqueService {
 
         // Filtrer les statistiques par la date d'aujourd'hui et calculer les totaux
         for (Statistique stat : statistiques) {
-            if (today.equals(stat.getStatDate())) {
-                totalAttempts += stat.getTotalAttempts();
-                successfulAttempts += stat.getSuccessfulAttempts();
-                failedAttempts += stat.getFailedAttempts();
+            try {
+                // Assurez-vous que la date de la statistique est au format "yyyy-MM-dd"
+                String statDate = stat.getStatDate();
+                LocalDate statLocalDate = LocalDate.parse(statDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                if (today.equals(statLocalDate.toString())) {
+                    totalAttempts += stat.getTotalAttempts();
+                    successfulAttempts += stat.getSuccessfulAttempts();
+                    failedAttempts += stat.getFailedAttempts();
+                }
+            } catch (DateTimeParseException e) {
+                // Logguez l'erreur si la date n'est pas au bon format
+                System.err.println("Erreur de parsing de la date: " + e.getMessage());
             }
         }
 
@@ -81,9 +91,18 @@ public class StatistiqueServiceImpl implements StatistiqueService {
 
         // Parcourir toutes les statistiques et additionner les valeurs
         for (Statistique stat : statistiques) {
-            totalAttempts += stat.getTotalAttempts();
-            successfulAttempts += stat.getSuccessfulAttempts();
-            failedAttempts += stat.getFailedAttempts();
+            try {
+                // Assurez-vous que la date de la statistique est au format "yyyy-MM-dd"
+                String statDate = stat.getStatDate();
+                LocalDate statLocalDate = LocalDate.parse(statDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                totalAttempts += stat.getTotalAttempts();
+                successfulAttempts += stat.getSuccessfulAttempts();
+                failedAttempts += stat.getFailedAttempts();
+            } catch (DateTimeParseException e) {
+                // Logguez l'erreur si la date n'est pas au bon format
+                System.err.println("Erreur de parsing de la date: " + e.getMessage());
+            }
         }
 
         // Créer un objet Statistique pour les données globales
@@ -95,5 +114,6 @@ public class StatistiqueServiceImpl implements StatistiqueService {
 
         return allTimeStatistique;
     }
+
 
 }
