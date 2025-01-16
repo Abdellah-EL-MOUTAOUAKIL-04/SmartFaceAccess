@@ -5,6 +5,7 @@ public class Statistique {
     private int totalAttempts;
     private int successfulAttempts;
     private int failedAttempts;
+    private String statDate;
 
     public Statistique() {}
 
@@ -45,5 +46,13 @@ public class Statistique {
 
     public void setFailedAttempts(int failedAttempts) {
         this.failedAttempts = failedAttempts;
+    }
+
+    public String getStatDate() {
+        return statDate;
+    }
+
+    public void setStatDate(String statDate) {
+        this.statDate = statDate;
     }
 }

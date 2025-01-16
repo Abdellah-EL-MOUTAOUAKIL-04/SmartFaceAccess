@@ -46,7 +46,7 @@ public class AdministratorSceneController {
     private Pane utilisateursPane;
 
     @FXML
-    private Pane ajouterUtilisateurPane; // New Pane for Adding Users
+    private Pane ajouterUtilisateurPane;
 
     @FXML
     private Pane parametresPane;
@@ -173,6 +173,9 @@ public class AdministratorSceneController {
     private ComboBox<String> utilisateurFonction;
 
     @FXML
+    private ComboBox<String> utilisateurStatusAcces;
+
+    @FXML
     private Button saveUserInfosButton;
 
     @FXML
@@ -195,6 +198,9 @@ public class AdministratorSceneController {
     private ComboBox<String> ajouterPaneFonction;
 
     @FXML
+    private ComboBox<String> ajouterPaneStatutAccess;
+
+    @FXML
     private ImageView ajouterPaneAvatar;
 
     @FXML
@@ -203,6 +209,7 @@ public class AdministratorSceneController {
     @FXML
     private Button ajouterPaneAnnulerButton;
 
+    private Utilisateur currentUserBeingModified;
 
     // Other Fields
     private final ObservableList<Utilisateur> usersList = FXCollections.observableArrayList();
@@ -216,8 +223,6 @@ public class AdministratorSceneController {
 
     private byte[] selectedImageBytes;
 
-
-
     @FXML
     public void initialize() {
         // Initialize the service
@@ -225,17 +230,16 @@ public class AdministratorSceneController {
         logService=new LogServiceImpl();
 
         // Set initial pane visibility
-        accueilPane.setVisible(true);
-        utilisateursPane.setVisible(false);
-        parametresPane.setVisible(false);
-        ajouterUtilisateurPane.setVisible(false); // Add User Pane hidden initially
+        showPane(accueilPane);
 
         // Set active style to accueilButton
         accueilButton.getStyleClass().add("active");
 
         // Initialize ComboBoxes
         utilisateurFonction.setItems(FXCollections.observableArrayList("gardien", "habitant", "femme de menage"));
+        utilisateurStatusAcces.setItems(FXCollections.observableArrayList("autorise", "refuse"));
         ajouterPaneFonction.setItems(FXCollections.observableArrayList("gardien", "habitant", "femme de menage"));
+        ajouterPaneStatutAccess.setItems(FXCollections.observableArrayList("autorise", "refuse"));
 
         // Configure UserTableView columns using PropertyValueFactory
         utilisateurNomColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -353,8 +357,8 @@ public class AdministratorSceneController {
         // Set up selection listener to populate the modification pane
         utilisateursTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                currentUserBeingModified = newSelection;
                 populateUserForm(newSelection);
-                // Optionally, switch to modification pane
                 showModificationPane();
             }
         });
@@ -416,6 +420,7 @@ public class AdministratorSceneController {
                         btn.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                         btn.setOnAction((event) -> {
                             Utilisateur user = (Utilisateur) getTableView().getItems().get(getIndex());
+                            currentUserBeingModified = user;
                             handleModifyUser(user);
                         });
                     }
@@ -475,17 +480,8 @@ public class AdministratorSceneController {
     }
 
     private void handleModifyUser(Utilisateur user) {
-        // Implement navigation to modify user information
-
-        // Example: Show an information alert (replace with actual logic)
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Modifier Utilisateur");
-        alert.setHeaderText(null);
-        alert.setContentText("Modifier les informations de l'utilisateur: " + user.getName());
-        alert.showAndWait();
-
-
-        // TODO: Navigate to the Modify User page or open a modification dialog
+        populateUserForm(user);
+        showModificationPane();
     }
 
     private void handleDeleteUser(Utilisateur user) {
@@ -500,7 +496,6 @@ public class AdministratorSceneController {
                 utilisateurService.delete(user);
                 utilisateursTableView.getItems().remove(user);
 
-                // Optionally, show a success alert
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Succès");
                 successAlert.setHeaderText(null);
@@ -535,22 +530,15 @@ public class AdministratorSceneController {
             clickedButton.getStyleClass().add("active");
         }
 
-        // Hide all panes
-        accueilPane.setVisible(false);
-        utilisateursPane.setVisible(false);
-        parametresPane.setVisible(false);
-        ajouterUtilisateurPane.setVisible(false); // Hide add Pane
 
         // Show the pane corresponding to the clicked button
         if (clickedButton.equals(accueilButton)) {
-            accueilPane.setVisible(true);
+            showPane(accueilPane);
         } else if (clickedButton.equals(utilisateursButton)) {
-            utilisateursPane.setVisible(true);
+            showPane(utilisateursPane);
         } else if (clickedButton.equals(ajouterButton)) {
-            ajouterUtilisateurPane.setVisible(true);
+            showPane(ajouterUtilisateurPane);
         } else if (clickedButton.equals(logsButton)) {
-            // Assuming you have a logsPane, set it visible here
-            // logsPane.setVisible(true);
             showAlert("Info", "Logs Pane is not implemented yet.", Alert.AlertType.INFORMATION);
         } else if (clickedButton.equals(parametresButton)) {
             parametresPane.setVisible(true);
@@ -561,7 +549,6 @@ public class AdministratorSceneController {
 
     // Reset all button styles to ensure only one is active
     private void resetButtonStyles() {
-        // List all sidebar buttons and clear their 'active' class
         clearActiveStyle(accueilButton);
         clearActiveStyle(utilisateursButton);
         clearActiveStyle(ajouterButton);
@@ -569,28 +556,36 @@ public class AdministratorSceneController {
         clearActiveStyle(parametresButton);
     }
 
-    // Utility method to clear 'active' style from a button
     private void clearActiveStyle(Button button) {
         button.getStyleClass().removeIf(style -> style.equals("active"));
     }
 
-    // Handle logout action
     private void handleLogout() {
         SceneManager sceneManager = new SceneManager((Stage) deconnecterButton.getScene().getWindow());
         sceneManager.switchScene(FXMLPathConstants.AUTHENTICATION_SCENE);
     }
 
+    private void showPane(Pane paneToShow) {
+        accueilPane.setVisible(false);
+        utilisateursPane.setVisible(false);
+        parametresPane.setVisible(false);
+        ajouterUtilisateurPane.setVisible(false);
+        utilisateurInfosModificationPane.setVisible(false);
+
+        // Show the desired pane
+        paneToShow.setVisible(true);
+    }
+
     // Handle adding a new user from modification Pane (if applicable)
     @FXML
     void handleAjouterUtilisateur(ActionEvent event) {
-
+        showPane(ajouterUtilisateurPane);
     }
 
     // Handle saving/updating user information
     @FXML
     void handleSaveUserInfos(ActionEvent event) {
-        Utilisateur selectedUser = utilisateursTableView.getSelectionModel().getSelectedItem();
-        if (selectedUser == null) {
+        if (currentUserBeingModified == null) {
             showAlert("No Selection", "Please select a user to update.", Alert.AlertType.WARNING);
             return;
         }
@@ -600,6 +595,7 @@ public class AdministratorSceneController {
         String telephone = utilisateurTelephone.getText();
         LocalDate dateNaissance = utilisateurDateNaissance.getValue();
         String fonction = utilisateurFonction.getValue();
+        String accessStatus = utilisateurStatusAcces.getValue();
 
         if (nomComplet.isEmpty() || email.isEmpty() || telephone.isEmpty() || fonction == null) {
             showAlert("Validation Error", "All fields are required!", Alert.AlertType.ERROR);
@@ -615,18 +611,22 @@ public class AdministratorSceneController {
         String prenom = nameParts[0];
         String nom = nameParts[1];
 
-        selectedUser.setName(prenom + " " + nom);
-        selectedUser.setEmail(email);
-        selectedUser.setNumero(telephone);
-        selectedUser.setFonctionne(fonction);
-        // Optionally update etage or accessStatus if needed
+        currentUserBeingModified.setName(prenom + " " + nom);
+        currentUserBeingModified.setEmail(email);
+        currentUserBeingModified.setNumero(telephone);
+        currentUserBeingModified.setFonctionne(fonction);
+        currentUserBeingModified.setAccessStatus(accessStatus);
+
         if (selectedImageBytes != null) {
-            selectedUser.setFaceImage(selectedImageBytes);
+            currentUserBeingModified.setFaceImage(selectedImageBytes);
         }
 
-        utilisateurService.update(selectedUser);
+        utilisateurService.update(currentUserBeingModified);
         utilisateursTableView.refresh();
         clearUserForm();
+        currentUserBeingModified = null; // Reset after saving
+
+        showPane(utilisateursPane); // Return to the utilisateursPane after saving
 
         showAlert("Success", "User updated successfully.", Alert.AlertType.INFORMATION);
     }
@@ -707,6 +707,7 @@ public class AdministratorSceneController {
         // Assuming date of birth is stored or handled separately; adjust as needed
         utilisateurDateNaissance.setValue(null); // Replace with actual value if available
         utilisateurFonction.setValue(user.getFonctionne());
+        utilisateurStatusAcces.setValue(user.getAccessStatus());
 
         // Display user's image if available
         if (user.getFaceImage() != null && user.getFaceImage().length > 0) {
@@ -720,6 +721,10 @@ public class AdministratorSceneController {
     // Method to show the modification Pane (optional)
     private void showModificationPane() {
         utilisateurInfosModificationPane.setVisible(true);
+        accueilPane.setVisible(false);
+        utilisateursPane.setVisible(false);
+        parametresPane.setVisible(false);
+        ajouterUtilisateurPane.setVisible(false);
     }
 
     // Method to show alerts
@@ -757,13 +762,14 @@ public class AdministratorSceneController {
     @FXML
     void cancelUserInfosAnnulerHandler(ActionEvent event) {
         clearUserForm();
+        showPane(utilisateursPane);
     }
 
     // Handle canceling add user action
     @FXML
     void cancelAjouterUtilisateurHandler(ActionEvent event) {
         clearAjouterUserForm();
-        ajouterUtilisateurPane.setVisible(false);
+        showPane(utilisateursPane);
     }
 
     // Handle saving a new user via ajouterUtilisateurPane
