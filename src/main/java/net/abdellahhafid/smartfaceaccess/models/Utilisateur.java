@@ -11,6 +11,11 @@ public class Utilisateur {
     private String fonctionne;
     private String accessStatus;
 
+    @Override
+    public String toString() {
+        return " "+id+" ";
+    }
+
     public Utilisateur() {}
 
     public Utilisateur(int id, String name, String email, String numero, byte[] faceImage, int etage, String fonctionne, String accessStatus) {

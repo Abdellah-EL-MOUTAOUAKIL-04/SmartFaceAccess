@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Log {
     private int id;
-    private int userId; // ID de l'utilisateur associé
+    private Utilisateur utilisateur;
     private Timestamp accessTime; // Heure de la tentative d'accès
     private String status; // "succeed" ou "failed"
 
@@ -12,11 +12,18 @@ public class Log {
     public Log() {}
 
     // Constructeur avec paramètres
-    public Log(int id, int userId, Timestamp accessTime, String status) {
+    public Log(int id, Utilisateur utilisateur, Timestamp accessTime, String status) {
         this.id = id;
-        this.userId = userId;
+        this.utilisateur = utilisateur;
         this.accessTime = accessTime;
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Log{" +
+                "id=" + id +
+                '}';
     }
 
     // Getters et setters
@@ -28,12 +35,12 @@ public class Log {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
     }
 
     public Timestamp getAccessTime() {

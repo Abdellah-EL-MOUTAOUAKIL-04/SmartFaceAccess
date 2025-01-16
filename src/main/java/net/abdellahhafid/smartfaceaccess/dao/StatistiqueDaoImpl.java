@@ -13,7 +13,7 @@ public class StatistiqueDaoImpl implements StatistiqueDao {
         Connection connection = SingletonConnectionDB.getConnection();
         Statistique statistique = null;
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM statistiques WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM statistique WHERE id = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -33,7 +33,7 @@ public class StatistiqueDaoImpl implements StatistiqueDao {
     public void save(Statistique statistique) {
         Connection connection = SingletonConnectionDB.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO statistiques (total_attempts, successful_attempts, failed_attempts) VALUES (?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO statistique (total_attempts, successful_attempts, failed_attempts) VALUES (?, ?, ?)");
             statement.setInt(1, statistique.getTotalAttempts());
             statement.setInt(2, statistique.getSuccessfulAttempts());
             statement.setInt(3, statistique.getFailedAttempts());
@@ -47,7 +47,7 @@ public class StatistiqueDaoImpl implements StatistiqueDao {
     public void update(Statistique statistique) {
         Connection connection = SingletonConnectionDB.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE statistiques SET total_attempts = ?, successful_attempts = ?, failed_attempts = ? WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE statistique SET total_attempts = ?, successful_attempts = ?, failed_attempts = ? WHERE id = ?");
             statement.setInt(1, statistique.getTotalAttempts());
             statement.setInt(2, statistique.getSuccessfulAttempts());
             statement.setInt(3, statistique.getFailedAttempts());
@@ -62,7 +62,7 @@ public class StatistiqueDaoImpl implements StatistiqueDao {
     public void delete(Statistique statistique) {
         Connection connection = SingletonConnectionDB.getConnection();
         try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM statistiques WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM statistique WHERE id = ?");
             statement.setInt(1, statistique.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -74,7 +74,7 @@ public class StatistiqueDaoImpl implements StatistiqueDao {
     public List<Statistique> findAll() {
         Connection connection = SingletonConnectionDB.getConnection();
         List<Statistique> statistiques = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM statistiques");
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM statistique");
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 Statistique statistique = new Statistique();

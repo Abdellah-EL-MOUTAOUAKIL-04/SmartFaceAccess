@@ -973,10 +973,10 @@
                               <Insets bottom="10.0" left="16.0" right="16.0" top="10.0" />
                            </padding>
                         </HBox>
-                        <TableView fx:id="coursEncoursTableView" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="954.0">
+                        <TableView fx:id="logsTableView" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="954.0">
                            <columns>
                               <TableColumn fx:id="accueilUtilisateurColumn" editable="false" prefWidth="111.46670228242874" text="Utilisateur" />
-                              <TableColumn fx:id="accueilEmailColumn" editable="false" prefWidth="169.59999084472656" style="-fx-font-weight: bold;" styleClass="boldtableViewColumn" text="Email " />
+                              <TableColumn fx:id="accueilEmailColumn" editable="false" prefWidth="169.59999084472656" style="-fx-font-weight: bold;" styleClass="boldtableViewColumn" text="Nom Complet " />
                               <TableColumn fx:id="accueilTypeUtilisateurColumn" editable="false" prefWidth="196.0" styleClass="tableViewColumn" text="Type d'utilisateur" />
                               <TableColumn fx:id="accueilDateHeureColumn" editable="false" prefWidth="219.7332763671875" styleClass="tableViewColumn" text="Date et Heure" />
                               <TableColumn fx:id="accueilStatutAccessColumn" editable="false" prefWidth="256.26666259765625" style="-fx-font-weight: bold;" styleClass="boldtableViewColumn" text="Statut d'Accès" />

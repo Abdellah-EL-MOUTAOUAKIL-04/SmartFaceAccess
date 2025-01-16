@@ -1,12 +1,17 @@
 package net.abdellahhafid.smartfaceaccess.dao;
 
 import net.abdellahhafid.smartfaceaccess.models.Log;
+import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LogDaoImpl implements LogDao {
+
+    private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public Log findById(Integer id) {
@@ -19,8 +24,8 @@ public class LogDaoImpl implements LogDao {
             if (resultSet.next()) {
                 log = new Log();
                 log.setId(resultSet.getInt("id"));
-                log.setUserId(resultSet.getInt("user_id"));
-                log.setAccessTime(resultSet.getTimestamp("access_time"));
+                log.setUtilisateur(new UtilisateurDaoImpl().findById(resultSet.getInt("user_id")));
+                log.setAccessTime(parseTimestamp(resultSet.getString("access_time"))); // Parse timestamp manually
                 log.setStatus(resultSet.getString("status"));
             }
         } catch (SQLException e) {
@@ -34,8 +39,8 @@ public class LogDaoImpl implements LogDao {
         Connection connection = SingletonConnectionDB.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO logs (user_id, access_time, status) VALUES (?, ?, ?)");
-            statement.setInt(1, log.getUserId());
-            statement.setTimestamp(2, log.getAccessTime());
+            statement.setInt(1, log.getUtilisateur().getId());
+            statement.setString(2, TIMESTAMP_FORMAT.format(log.getAccessTime())); // Format timestamp as string
             statement.setString(3, log.getStatus());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -48,8 +53,8 @@ public class LogDaoImpl implements LogDao {
         Connection connection = SingletonConnectionDB.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement("UPDATE logs SET user_id = ?, access_time = ?, status = ? WHERE id = ?");
-            statement.setInt(1, log.getUserId());
-            statement.setTimestamp(2, log.getAccessTime());
+            statement.setInt(1, log.getUtilisateur().getId());
+            statement.setString(2, TIMESTAMP_FORMAT.format(log.getAccessTime())); // Format timestamp as string
             statement.setString(3, log.getStatus());
             statement.setInt(4, log.getId());
             statement.executeUpdate();
@@ -79,8 +84,8 @@ public class LogDaoImpl implements LogDao {
             while (resultSet.next()) {
                 Log log = new Log();
                 log.setId(resultSet.getInt("id"));
-                log.setUserId(resultSet.getInt("user_id"));
-                log.setAccessTime(resultSet.getTimestamp("access_time"));
+                log.setUtilisateur(new UtilisateurDaoImpl().findById(resultSet.getInt("user_id")));
+                log.setAccessTime(parseTimestamp(resultSet.getString("access_time"))); // Parse timestamp manually
                 log.setStatus(resultSet.getString("status"));
                 logs.add(log);
             }
@@ -88,5 +93,15 @@ public class LogDaoImpl implements LogDao {
             e.printStackTrace();
         }
         return logs;
+    }
+
+    private Timestamp parseTimestamp(String timestampStr) {
+        try {
+            java.util.Date parsedDate = TIMESTAMP_FORMAT.parse(timestampStr);
+            return new Timestamp(parsedDate.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null; // Return null if parsing fails
+        }
     }
 }

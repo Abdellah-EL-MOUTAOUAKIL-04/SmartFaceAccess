@@ -1,5 +1,7 @@
 package net.abdellahhafid.smartfaceaccess.controllers;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,9 +18,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import net.abdellahhafid.smartfaceaccess.constants.FXMLPathConstants;
+import net.abdellahhafid.smartfaceaccess.dao.StatistiqueDao;
+import net.abdellahhafid.smartfaceaccess.dao.StatistiqueDaoImpl;
+import net.abdellahhafid.smartfaceaccess.dao.UtilisateurDao;
+import net.abdellahhafid.smartfaceaccess.dao.UtilisateurDaoImpl;
+import net.abdellahhafid.smartfaceaccess.models.Log;
+import net.abdellahhafid.smartfaceaccess.models.Statistique;
 import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
-import net.abdellahhafid.smartfaceaccess.services.UtilisateurService;
-import net.abdellahhafid.smartfaceaccess.services.UtilisateurServiceImpl;
+import net.abdellahhafid.smartfaceaccess.services.*;
 import net.abdellahhafid.smartfaceaccess.utils.SceneManager;
 
 import java.io.ByteArrayInputStream;
@@ -69,7 +76,7 @@ public class AdministratorSceneController {
     @FXML
     private Button deconnecterButton;
 
-    // TableView and Columns
+    // TableView and Columns user
     @FXML
     private TableView<Utilisateur> utilisateursTableView;
 
@@ -98,9 +105,54 @@ public class AdministratorSceneController {
     private TableColumn<Utilisateur, String> utilisateurDeleteColumn;
 
 
-    // Other Controls
+    // TableView and Columns Log
+    @FXML
+    private TableView<Log> logsTableView;
+
+    @FXML
+    private TableColumn<Log, Byte[]> accueilUtilisateurColumn;
+
+    @FXML
+    private TableColumn<Log, String> accueilEmailColumn;
+
+    @FXML
+    private TableColumn<Log, String> accueilTypeUtilisateurColumn;
+
+    @FXML
+    private TableColumn<Log, String> accueilDateHeureColumn;
+
+    @FXML
+    private TableColumn<Log, String> accueilStatutAccessColumn;
+
+    // Stats
     @FXML
     private Text accueilTotalUsersNumbers;
+
+    @FXML
+    private Text accueilTentativeTotalNumber;
+
+    @FXML
+    private Label tentativeTotaleReconnaissanceReussi;
+
+    @FXML
+    private Label tentativeTotaleReconnaissanceEchouée;
+
+    @FXML
+    private Text accueilTentativeToday;
+
+    @FXML
+    private Label accueilTentativeAujourdhuiReussi;
+
+    @FXML
+    private Label accueilTentativeAujourdhuiEchouees;
+
+
+
+
+
+    //other controls
+
+
 
     @FXML
     private ImageView utilisateurAvatar;
@@ -154,8 +206,13 @@ public class AdministratorSceneController {
 
     // Other Fields
     private final ObservableList<Utilisateur> usersList = FXCollections.observableArrayList();
+    private final ObservableList<Log> logList=FXCollections.observableArrayList();
+
 
     private UtilisateurService utilisateurService;
+    private LogService logService;
+    private StatistiqueService statistiqueService;
+
 
     private byte[] selectedImageBytes;
 
@@ -165,6 +222,7 @@ public class AdministratorSceneController {
     public void initialize() {
         // Initialize the service
         utilisateurService = new UtilisateurServiceImpl(); // Replace with your actual implementation
+        logService=new LogServiceImpl();
 
         // Set initial pane visibility
         accueilPane.setVisible(true);
@@ -179,7 +237,7 @@ public class AdministratorSceneController {
         utilisateurFonction.setItems(FXCollections.observableArrayList("gardien", "habitant", "femme de menage"));
         ajouterPaneFonction.setItems(FXCollections.observableArrayList("gardien", "habitant", "femme de menage"));
 
-        // Configure TableView columns using PropertyValueFactory
+        // Configure UserTableView columns using PropertyValueFactory
         utilisateurNomColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         utilisateurEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         utilisateurTelephoneColumn.setCellValueFactory(new PropertyValueFactory<>("numero"));
@@ -187,8 +245,86 @@ public class AdministratorSceneController {
         utilisateurFonctionneColumn.setCellValueFactory(new PropertyValueFactory<>("fonctionne"));
         utilisateursEtatAccesColumn.setCellValueFactory(new PropertyValueFactory<>("accessStatus"));
 
-        // Bind data to TableView
+        // Bind data to UserTableView
         utilisateursTableView.setItems(usersList);
+
+        //Configure LogTableView columns using PropertyValueFactory
+        accueilEmailColumn.setCellValueFactory(cellData -> {
+            Log log = cellData.getValue();
+            if (log.getUtilisateur() != null) {
+                return new SimpleObjectProperty<>(log.getUtilisateur().getName());
+            } else {
+                return new SimpleObjectProperty<>(null);
+            }
+        });
+        accueilDateHeureColumn.setCellValueFactory(new PropertyValueFactory<>("accessTime"));
+        accueilStatutAccessColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        accueilUtilisateurColumn.setCellFactory(column -> new TableCell<Log, Byte[]>() {
+            private final ImageView imageView = new ImageView();
+
+            @Override
+            protected void updateItem(Byte[] imageBytes, boolean empty) {
+                super.updateItem(imageBytes, empty);
+
+                if (empty || imageBytes == null || imageBytes.length == 0) {
+                    setGraphic(null); // No image if the cell is empty
+                } else {
+                    try {
+                        // Convert Byte[] to byte[] for ByteArrayInputStream
+                        byte[] primitiveBytes = convertToPrimitive(imageBytes);
+
+                        // Convert the byte array to an Image
+                        Image image = new Image(new ByteArrayInputStream(primitiveBytes));
+                        imageView.setImage(image);
+
+                        // Adjust the dimensions of the image
+                        imageView.setFitWidth(50); // Width
+                        imageView.setFitHeight(50); // Height
+                        imageView.setPreserveRatio(true); // Maintain aspect ratio
+                        setGraphic(imageView);
+                    } catch (Exception e) {
+                        setGraphic(null); // In case of error
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            // Helper method to convert Byte[] to byte[]
+            private byte[] convertToPrimitive(Byte[] boxedArray) {
+                byte[] primitiveArray = new byte[boxedArray.length];
+                for (int i = 0; i < boxedArray.length; i++) {
+                    primitiveArray[i] = boxedArray[i];
+                }
+                return primitiveArray;
+            }
+        });
+
+        accueilUtilisateurColumn.setCellValueFactory(cellData -> {
+            Log log = cellData.getValue();
+            if (log.getUtilisateur() != null) {
+                // Convert the primitive byte[] to a boxed Byte[] and wrap it in a SimpleObjectProperty
+                Byte[] boxedBytes = convertToBoxed(log.getUtilisateur().getFaceImage());
+                return new SimpleObjectProperty<>(boxedBytes);
+            } else {
+                return new SimpleObjectProperty<>(null);
+            }
+        });
+
+
+        accueilTypeUtilisateurColumn.setCellValueFactory(cellData -> {
+            Log log = cellData.getValue();
+            if (log.getUtilisateur() != null) {
+                return new SimpleStringProperty(log.getUtilisateur().getFonctionne());
+            } else {
+                return new SimpleStringProperty("");
+            }
+        });
+
+
+
+        //Bind data to LogTableView
+        logsTableView.setItems(logList);
 
         // Initialize Modify Button Column
         addModifyButtonToTable();
@@ -201,6 +337,12 @@ public class AdministratorSceneController {
 
         // Set total users count
         updateUserCount();
+
+        //Load Stats
+        loadStats();
+
+        //Load Stats
+        loadLogs();
 
         // Set up ImageView click to upload image for modification Pane
         utilisateurAvatar.setOnMouseClicked(this::handleImageUpload);
@@ -216,6 +358,46 @@ public class AdministratorSceneController {
                 showModificationPane();
             }
         });
+    }
+
+    private Byte[] convertToBoxed(byte[] primitiveArray) {
+        if (primitiveArray == null) {
+            return null;
+        }
+        Byte[] boxedArray = new Byte[primitiveArray.length];
+        for (int i = 0; i < primitiveArray.length; i++) {
+            boxedArray[i] = primitiveArray[i];
+        }
+        return boxedArray;
+    }
+
+    public void loadStats(){
+        utilisateurService=new UtilisateurServiceImpl();
+        statistiqueService=new StatistiqueServiceImpl();
+
+        List<Utilisateur> users=utilisateurService.findAll();
+
+        Statistique statistique= statistiqueService.findById(0);
+
+        accueilTotalUsersNumbers.setText(String.valueOf(users.size()));
+
+        accueilTentativeTotalNumber.setText("");
+
+        tentativeTotaleReconnaissanceReussi.setText("");
+
+        tentativeTotaleReconnaissanceEchouée.setText("");
+
+        accueilTentativeToday.setText("");
+
+        accueilTentativeAujourdhuiReussi.setText("");
+
+        accueilTentativeAujourdhuiEchouees.setText("");
+    }
+
+    void loadLogs() {
+        List<Log> logs=logService.findAll();
+        System.out.println(logs.toString());
+        logList.setAll(logs);
     }
 
     private void addModifyButtonToTable() {
