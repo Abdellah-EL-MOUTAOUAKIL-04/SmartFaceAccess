@@ -1,6 +1,6 @@
 package net.abdellahhafid.smartfaceaccess.services;
 
-import net.abdellahhafid.smartfaceaccess.Models.Log;
+import net.abdellahhafid.smartfaceaccess.models.Log;
 import net.abdellahhafid.smartfaceaccess.dao.LogDao;
 import net.abdellahhafid.smartfaceaccess.dao.LogDaoImpl;
 

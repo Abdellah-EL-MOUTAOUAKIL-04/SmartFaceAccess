@@ -1,4 +1,4 @@
-package net.abdellahhafid.smartfaceaccess.Models;
+package net.abdellahhafid.smartfaceaccess.models;
 
 public class Statistique {
     private int id;

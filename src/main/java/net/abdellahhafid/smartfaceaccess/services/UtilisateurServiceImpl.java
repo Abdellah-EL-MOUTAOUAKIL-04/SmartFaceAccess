@@ -1,6 +1,6 @@
 package net.abdellahhafid.smartfaceaccess.services;
 
-import net.abdellahhafid.smartfaceaccess.Models.Utilisateur;
+import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
 import net.abdellahhafid.smartfaceaccess.dao.UtilisateurDao;
 import net.abdellahhafid.smartfaceaccess.dao.UtilisateurDaoImpl;
 

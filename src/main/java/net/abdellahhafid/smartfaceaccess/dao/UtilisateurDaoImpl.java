@@ -1,6 +1,6 @@
 package net.abdellahhafid.smartfaceaccess.dao;
 
-import net.abdellahhafid.smartfaceaccess.Models.Utilisateur;
+import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
 
 import java.sql.*;
 import java.util.ArrayList;
