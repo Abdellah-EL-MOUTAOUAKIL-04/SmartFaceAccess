@@ -1,4 +1,4 @@
-package net.abdellahhafid.smartfaceaccess.Models;
+package net.abdellahhafid.smartfaceaccess.models;
 
 import java.sql.Timestamp;
 

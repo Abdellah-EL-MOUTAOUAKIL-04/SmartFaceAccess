@@ -1,6 +1,6 @@
 package net.abdellahhafid.smartfaceaccess.services;
 
-import net.abdellahhafid.smartfaceaccess.Models.Statistique;
+import net.abdellahhafid.smartfaceaccess.models.Statistique;
 
 import java.util.List;
 

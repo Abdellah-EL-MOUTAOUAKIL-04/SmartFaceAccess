@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-import net.abdellahhafid.smartfaceaccess.Models.enums.ToastType;
+import net.abdellahhafid.smartfaceaccess.models.enums.ToastType;
 
 public class ToastController {
 
