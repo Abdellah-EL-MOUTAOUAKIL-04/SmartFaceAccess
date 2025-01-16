@@ -4,6 +4,7 @@ public class Utilisateur {
     private int id;
     private String name;
     private String email;
+    private String password;
     private String numero;
     private byte[] faceImage;
     private int etage;
@@ -45,6 +46,14 @@ public class Utilisateur {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void getPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNumero() {
