@@ -11,7 +11,7 @@ import java.net.URL;
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-        URL resource = Application.class.getResource(FXMLPathConstants.AUTHENTICATION_SCENE);
+        URL resource = Application.class.getResource(FXMLPathConstants.ADMINISTRATOR_SCENE);
         if (resource == null) {
             throw new RuntimeException("FXML file not found: " + FXMLPathConstants.AUTHENTICATION_SCENE);
         }
