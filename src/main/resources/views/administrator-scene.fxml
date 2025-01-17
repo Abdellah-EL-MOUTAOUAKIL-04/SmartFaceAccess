@@ -316,26 +316,9 @@
                               <Insets bottom="16.0" />
                            </padding>
                         </HBox>
-                        <HBox prefHeight="40.0" prefWidth="952.0" spacing="50.0" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
-                           <children>
-                              <Text fill="#344054" strokeType="OUTSIDE" strokeWidth="0.0" text="Date de naissance" wrappingWidth="275.0">
-                                 <font>
-                                    <Font name="Inter Medium" size="13.0" />
-                                 </font>
-                              </Text>
-                              <HBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="626.0" spacing="16.0">
-                                 <children>
-                                    <DatePicker fx:id="dateBirthDatePickerParametres" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="396.0" promptText="07/19/2002" style="-fx-background-color: #fff; -fx-border-color: #D0D5DD; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-border-image-insets: 0; -fx-background-insets: 0;" />
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets bottom="16.0" />
-                           </padding>
-                        </HBox>
                      </children>
                   </VBox>
-                  <VBox layoutX="24.0" layoutY="380.0" prefHeight="200.0" prefWidth="952.0" spacing="16.0">
+                  <VBox layoutX="24.0" layoutY="340.0" prefHeight="200.0" prefWidth="952.0" spacing="16.0">
                      <children>
                         <HBox prefHeight="40.0" prefWidth="952.0" spacing="311.4" style="-fx-border-color: #D0D5DD; -fx-border-width: 0 0 1 0;">
                            <children>

@@ -38,10 +38,10 @@ public class ToastController {
 
     private void applyStyle(ToastType type) {
         switch (type) {
-            case ToastType.WARNING:
+            case ToastType.ALERT:
                 toastPane.setStyle("-fx-background-color: #e74c3c; -fx-background-radius: 10; -fx-padding: 10;");
                 break;
-            case ToastType.ALERT:
+            case ToastType.WARNING:
                 toastPane.setStyle("-fx-background-color: #f39c12; -fx-background-radius: 10; -fx-padding: 10;");
                 break;
             case ToastType.INFO:

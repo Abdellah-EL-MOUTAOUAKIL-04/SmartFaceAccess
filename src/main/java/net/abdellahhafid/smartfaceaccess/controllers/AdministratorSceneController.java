@@ -104,8 +104,6 @@ public class AdministratorSceneController {
     @FXML
     private TableColumn<Utilisateur, String> utilisateurDeleteColumn;
 
-
-    // TableView and Columns Log
     @FXML
     private TableView<Log> logsTableView;
 
@@ -207,6 +205,32 @@ public class AdministratorSceneController {
 
     @FXML
     private Button ajouterPaneAnnulerButton;
+
+    @FXML
+    private TextField nomFieldParametres;
+
+    @FXML
+    private TextField prenomFieldParametres;
+
+    @FXML
+    private TextField telephoneFieldParametres;
+
+    @FXML
+    private TextField emailFieldParametres;
+
+    @FXML
+    private TextField oldPasswordParametres;
+
+    @FXML
+    private TextField newPasswordParametres;
+
+    @FXML
+    private Label errorPasswordUpdate;
+
+    @FXML
+    private Label errorInfoUpdate;
+
+
 
     private Utilisateur currentUserBeingModified;
 
@@ -596,7 +620,7 @@ public class AdministratorSceneController {
         } else if (clickedButton.equals(logsButton)) {
             showAlert("Info", "Logs Pane is not implemented yet.", Alert.AlertType.INFORMATION);
         } else if (clickedButton.equals(parametresButton)) {
-            parametresPane.setVisible(true);
+            showPane(parametresPane);
         } else if (clickedButton.equals(deconnecterButton)) {
             handleLogout();
         }
@@ -629,6 +653,107 @@ public class AdministratorSceneController {
 
         // Show the desired pane
         paneToShow.setVisible(true);
+
+        // If the pane to show is parametresPane, populate its fields
+        if (paneToShow.equals(parametresPane)) {
+            populateParametresPane();
+        }
+    }
+    /**
+     * Retrieves the admin user from the database.
+     *
+     * @return The admin Utilisateur object, or null if not found.
+     */
+    private Utilisateur getAdminUser() {
+        List<Utilisateur> allUsers = utilisateurService.findAll();
+        return allUsers.stream()
+                .filter(user -> "admin".equalsIgnoreCase(user.getFonctionne()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @FXML
+    void handleSauvegarderButtonInfosParameters(ActionEvent event) {
+        // Clear previous error messages
+        errorPasswordUpdate.setText("");
+
+        // Retrieve input values
+        String nom = nomFieldParametres.getText().trim();
+        String prenom = prenomFieldParametres.getText().trim();
+        String telephone = telephoneFieldParametres.getText().trim();
+        String email = emailFieldParametres.getText().trim();
+
+        // Validate inputs
+        if (prenom.isEmpty() || nom.isEmpty() || telephone.isEmpty() || email.isEmpty()) {
+            errorPasswordUpdate.setText("Tous les champs sont obligatoires.");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            errorPasswordUpdate.setText("Format d'email invalide.");
+            return;
+        }
+
+        if (!isValidPhoneNumber(telephone)) {
+            errorPasswordUpdate.setText("Format de téléphone invalide.");
+            return;
+        }
+
+        // Retrieve the admin user
+        Utilisateur admin = getAdminUser();
+        if (admin == null) {
+            errorPasswordUpdate.setText("Administrateur non trouvé.");
+            return;
+        }
+
+        // Check if the new email is already taken by another user
+        List<Utilisateur> allUsers = utilisateurService.findAll();
+        boolean emailExists = allUsers.stream()
+                .anyMatch(user -> user.getEmail().equalsIgnoreCase(email) && user.getId() != admin.getId());
+
+        if (emailExists) {
+            errorPasswordUpdate.setText("Cet email est déjà utilisé par un autre utilisateur.");
+            return;
+        }
+
+        // Update admin information
+        admin.setName(prenom + " " + nom);
+        admin.setNumero(telephone);
+        admin.setEmail(email);
+
+        // Save changes to the database
+        try {
+            utilisateurService.update(admin);
+            showAlert("Succès", "Informations mises à jour avec succès.", Alert.AlertType.INFORMATION);
+        } catch (Exception e) {
+            errorPasswordUpdate.setText("Erreur lors de la mise à jour : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Handles canceling changes in the parametresPane.
+     *
+     * @param event The ActionEvent triggered by clicking the "Annuler" button.
+     */
+    @FXML
+    void handleCancelParametresChanges(ActionEvent event) {
+        // Reset personal information fields
+        nomFieldParametres.clear();
+        prenomFieldParametres.clear();
+        telephoneFieldParametres.clear();
+        emailFieldParametres.clear();
+
+        // Reset password fields
+        oldPasswordParametres.clear();
+        newPasswordParametres.clear();
+
+        // Clear error messages
+        errorInfoUpdate.setText("");
+        errorPasswordUpdate.setText("");
+
+        // Optionally, repopulate fields with current admin data
+        populateParametresPane();
     }
 
     // Handle adding a new user from modification Pane (if applicable)
@@ -679,13 +804,91 @@ public class AdministratorSceneController {
         utilisateurService.update(currentUserBeingModified);
         utilisateursTableView.refresh();
         clearUserForm();
-        currentUserBeingModified = null; // Reset after saving
+        currentUserBeingModified = null;
 
-        showPane(utilisateursPane); // Return to the utilisateursPane after saving
+        showPane(utilisateursPane);
 
         showAlert("Success", "User updated successfully.", Alert.AlertType.INFORMATION);
     }
 
+    @FXML
+    void handleSauvegarderButtonSecurityParameters(ActionEvent event) {
+        errorPasswordUpdate.setText("");
+
+        String oldPassword = oldPasswordParametres.getText();
+        String newPassword = newPasswordParametres.getText();
+
+        if (oldPassword.isEmpty() || newPassword.isEmpty()) {
+            errorPasswordUpdate.setText("Tous les champs de mot de passe sont obligatoires.");
+            return;
+        }
+
+        if (newPassword.length() < 6) {
+            errorPasswordUpdate.setText("Le nouveau mot de passe doit comporter au moins 6 caractères.");
+            return;
+        }
+
+        Utilisateur admin = getAdminUser();
+        if (admin == null) {
+            errorPasswordUpdate.setText("Administrateur non trouvé.");
+            return;
+        }
+
+        if (!oldPassword.equals(admin.getPassword())) {
+            errorPasswordUpdate.setText("L'ancien mot de passe est incorrect.");
+            return;
+        }
+
+        admin.setPassword(newPassword);
+
+        try {
+            utilisateurService.update(admin);
+            showAlert("Succès", "Mot de passe mis à jour avec succès.", Alert.AlertType.INFORMATION);
+
+            oldPasswordParametres.clear();
+            newPasswordParametres.clear();
+        } catch (Exception e) {
+            errorPasswordUpdate.setText("Erreur lors de la mise à jour : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email.matches(emailRegex);
+    }
+
+    private boolean isValidPhoneNumber(String phone) {
+        String phoneRegex = "^(?:\\+\\d{1,3}\\s\\d{3}-\\d{6,8}|0\\d{9})$";
+        return phone.matches(phoneRegex);
+    }
+
+    private void populateParametresPane() {
+        Utilisateur admin = getAdminUser();
+        if (admin != null) {
+            // Split the name into prenom and nom assuming "Prenom Nom" format
+            String[] nameParts = admin.getName().split(" ", 2);
+            if (nameParts.length >= 2) {
+                prenomFieldParametres.setText(nameParts[0]);
+                nomFieldParametres.setText(nameParts[1]);
+            } else {
+                prenomFieldParametres.setText(admin.getName());
+                nomFieldParametres.setText("");
+            }
+
+            telephoneFieldParametres.setText(admin.getNumero());
+            emailFieldParametres.setText(admin.getEmail());
+
+            // Clear password fields
+            oldPasswordParametres.clear();
+            newPasswordParametres.clear();
+
+            // Clear error messages
+            errorPasswordUpdate.setText("");
+        } else {
+            showAlert("Erreur", "Administrateur non trouvé.", Alert.AlertType.ERROR);
+        }
+    }
     // Handle deleting a user
     @FXML
     void handleDeleteUser(ActionEvent event) {
@@ -880,22 +1083,6 @@ public class AdministratorSceneController {
         loadUsers();
         utilisateursTableView.refresh();
         showAlert("Refreshed", "User list has been refreshed.", Alert.AlertType.INFORMATION);
-    }
-
-    // Placeholder methods for other actions
-    @FXML
-    void handleCancelParametresChanges(ActionEvent event) {
-        // Implement parameter cancel logic
-    }
-
-    @FXML
-    void handleSauvegarderButtonInfosParameters(ActionEvent event) {
-        // Implement parameter save logic
-    }
-
-    @FXML
-    void handleSauvegarderButtonSecurityParameters(ActionEvent event) {
-        // Implement security parameter save logic
     }
 
 }
