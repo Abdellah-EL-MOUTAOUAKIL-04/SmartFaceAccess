@@ -660,6 +660,8 @@ public class AdministratorSceneController {
     // Method to load users from the service
     private void loadUsers() {
         List<Utilisateur> users = utilisateurService.findAll();
+        //eleimine l'utilisateur avec la fonctionne admin
+        users=users.stream().filter(user -> !"admin".equalsIgnoreCase(user.getFonctionne())).collect(Collectors.toList());
         usersList.setAll(users);
     }
 

@@ -260,6 +260,7 @@ public class ClientSpaceSceneController {
                         }
                     }
                 } else if (previousUser != null) {
+                    previousLogTimestamp=null;
                     // Aucun utilisateur reconnu mais un utilisateur précédent est stocké
                     switchToUnidentified();
                     previousUser = null;  // Réinitialiser l'utilisateur précédent
