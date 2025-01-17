@@ -17,8 +17,11 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import net.abdellahhafid.smartfaceaccess.constants.FXMLPathConstants;
+import net.abdellahhafid.smartfaceaccess.models.Log;
 import net.abdellahhafid.smartfaceaccess.models.Utilisateur;
 import net.abdellahhafid.smartfaceaccess.services.ImageProcessingServiceImpl;
+import net.abdellahhafid.smartfaceaccess.services.LogService;
+import net.abdellahhafid.smartfaceaccess.services.LogServiceImpl;
 import net.abdellahhafid.smartfaceaccess.services.UtilisateurServiceImpl;
 import net.abdellahhafid.smartfaceaccess.utils.SceneManager;
 import org.opencv.core.Mat;
@@ -34,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,10 +55,12 @@ public class ClientSpaceSceneController {
     private Timer timer;
     private CascadeClassifier faceCascade;
     private ImageProcessingServiceImpl imageProcessingService;
+    private LogService logService;
 
     @FXML
     public void initialize() {
         imageProcessingService = new ImageProcessingServiceImpl(new UtilisateurServiceImpl());
+        logService = new LogServiceImpl();
         initializeUI();
         loadFaceCascade();
         startCameraInitialization();
@@ -192,6 +198,9 @@ public class ClientSpaceSceneController {
 
     private Utilisateur previousUser = null;  // Variable pour mémoriser l'utilisateur précédent
 
+    // Declare this variable at the class level, outside of the method
+    private Long previousLogTimestamp = null;
+
     private void detectAndDrawFaces(Mat frame, GraphicsContext gc) {
         Mat grayFrame = new Mat();
         Imgproc.cvtColor(frame, grayFrame, Imgproc.COLOR_BGRA2GRAY);
@@ -219,18 +228,47 @@ public class ClientSpaceSceneController {
                 if (recognizedUser != null) {
                     if (previousUser == null || recognizedUser.getId() != previousUser.getId()) {
                         previousUser = recognizedUser;
-                        switchToIdentified(recognizedUser.getName(), recognizedUser.getEmail(), recognizedUser.getNumero(), recognizedUser.getAccessStatus(), recognizedUser.getFonctionne(), new Date(System.currentTimeMillis()), recognizedUser.getFaceImage());
-                        System.out.println("switchToIdentified");
+
+                        // Get the current time
+                        long currentTime = System.currentTimeMillis();
+
+                        // Check if a log was added within the last minute (60,000 milliseconds)
+                        if (previousLogTimestamp == null || (currentTime - previousLogTimestamp > 60000)) {
+                            // Switch to identified
+                            switchToIdentified(
+                                    recognizedUser.getName(),
+                                    recognizedUser.getEmail(),
+                                    recognizedUser.getNumero(),
+                                    recognizedUser.getAccessStatus(),
+                                    recognizedUser.getFonctionne(),
+                                    new Date(currentTime),
+                                    recognizedUser.getFaceImage()
+                            );
+
+                            // Adding user to log
+                            Log log = new Log();
+                            log.setUtilisateur(recognizedUser);
+                            log.setAccessTime(new Timestamp(currentTime));
+                            log.setStatus(recognizedUser.getAccessStatus().equals("autorise") ? "succeed" : "failed");
+                            logService.save(log);
+                            System.out.println("switchToIdentified and added to logs");
+
+                            // Update the previous log timestamp
+                            previousLogTimestamp = currentTime;
+                        } else {
+                            System.out.println("Log skipped: User added less than a minute ago.");
+                        }
                     }
                 } else if (previousUser != null) {
                     // Aucun utilisateur reconnu mais un utilisateur précédent est stocké
                     switchToUnidentified();
                     previousUser = null;  // Réinitialiser l'utilisateur précédent
-                    System.out.println("switchToUnidentified");
+                    System.out.println("switchToUnidentified ");
                 }
             }
         });
     }
+
 
     private void drawFrame(GraphicsContext gc, Mat frame) {
         int width = frame.width();

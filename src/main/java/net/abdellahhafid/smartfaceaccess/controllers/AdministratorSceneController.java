@@ -34,7 +34,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AdministratorSceneController {
 
@@ -234,9 +236,22 @@ public class AdministratorSceneController {
 
     private Utilisateur currentUserBeingModified;
 
+    //filter combobox
+    @FXML
+    private ComboBox<String> accueilFilterComboBox;
+
+    //reload button
+    @FXML private Button refreshButton;
+
+    //recherche input
+    @FXML
+    private TextField searchTextFieldAccueilPane;
+
+
     // Other Fields
     private final ObservableList<Utilisateur> usersList = FXCollections.observableArrayList();
     private final ObservableList<Log> logList=FXCollections.observableArrayList();
+    private List<Log> allLogs;  // Liste complète des logs, non filtrée
 
 
     private UtilisateurService utilisateurService;
@@ -263,6 +278,15 @@ public class AdministratorSceneController {
         utilisateurStatusAcces.setItems(FXCollections.observableArrayList("autorise", "refuse"));
         ajouterPaneFonction.setItems(FXCollections.observableArrayList("gardien", "habitant", "femme de menage"));
         ajouterPaneStatutAccess.setItems(FXCollections.observableArrayList("autorise", "refuse"));
+        accueilFilterComboBox.setItems(FXCollections.observableArrayList("Tous", "Autorisés", "Refusés","Date asc","Date desc"));
+
+        //set default value of filter
+        accueilFilterComboBox.getSelectionModel().select("Tous");
+
+        //ajouter un listener sur le combobox filter
+        accueilFilterComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            filterLogs(newValue);
+        });
 
         // Configure UserTableView columns using PropertyValueFactory
         utilisateurNomColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -425,6 +449,14 @@ public class AdministratorSceneController {
         //Load Stats
         loadLogs();
 
+        refreshButton.setOnAction(event -> loadLogs());
+
+        //search
+        searchTextFieldAccueilPane.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchLogs(newValue);  // Appeler la méthode de recherche chaque fois que le texte change
+        });
+
+
         // Set up ImageView click to upload image for modification Pane
         utilisateurAvatar.setOnMouseClicked(this::handleImageUpload);
 
@@ -480,7 +512,48 @@ public class AdministratorSceneController {
     void loadLogs() {
         List<Log> logs=logService.findAll();
         System.out.println(logs.toString());
+        allLogs = logs;  // Conserver tous les logs pour les filtres
         logList.setAll(logs);
+    }
+
+    private void filterLogs(String filter) {
+        switch (filter) {
+            case "Tous":
+                logList.setAll(allLogs);
+                break;
+            case "Autorisés":
+                logList.setAll(allLogs.stream().filter(log -> "succeed".equals(log.getStatus())).collect(Collectors.toList()));
+                break;
+            case "Refusés":
+                logList.setAll(allLogs.stream().filter(log -> "failed".equals(log.getStatus())).collect(Collectors.toList()));
+                break;
+            case "Date asc":
+                logList.setAll(allLogs.stream().sorted(Comparator.comparing(Log::getAccessTime)).collect(Collectors.toList()));
+                break;
+            case "Date desc":
+                logList.setAll(allLogs.stream().sorted(Comparator.comparing(Log::getAccessTime).reversed()).collect(Collectors.toList()));
+                break;
+            default:
+                logList.setAll(allLogs);
+                break;
+        }
+    }
+
+    private void searchLogs(String searchText) {
+        if (searchText == null || searchText.isEmpty()) {
+            logList.setAll(allLogs);  // Si le champ de recherche est vide, afficher tous les logs
+        } else {
+            // Filtrer les logs en fonction du texte de recherche
+            List<Log> filteredLogs = allLogs.stream()
+                    .filter(log -> log.getUtilisateur().getName().toLowerCase().contains(searchText.toLowerCase()) ||
+                            log.getUtilisateur().getEmail().toLowerCase().contains(searchText.toLowerCase()) ||
+                            log.getUtilisateur().getFonctionne().toLowerCase().contains(searchText.toLowerCase()) ||
+                            log.getStatus().toLowerCase().contains(searchText.toLowerCase()) ||
+                            log.getAccessTime().toString().contains(searchText))  // Ajouter plus de critères de recherche si nécessaire
+                    .collect(Collectors.toList());
+
+            logList.setAll(filteredLogs);  // Mettre à jour la TableView avec les logs filtrés
+        }
     }
 
     private void addModifyButtonToTable() {
