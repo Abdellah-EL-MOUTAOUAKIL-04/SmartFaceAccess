@@ -35,10 +35,13 @@ public class ImageProcessingServiceImpl implements ImageProcessingService {
         }
 
         List<Mat> imagesList = new ArrayList<>();
-        Mat labelsMat = new Mat(utilisateurs.size(), 1, CvType.CV_32SC1);
+        List<Utilisateur> utilisateursWithoutAdmin = utilisateurs.stream()
+                .filter(user -> !"admin".equalsIgnoreCase(user.getFonctionne()))
+                .toList();
+        Mat labelsMat = new Mat(utilisateursWithoutAdmin.size(), 1, CvType.CV_32SC1);
         int labelIndex = 0;
 
-        for (Utilisateur utilisateur : utilisateurs) {
+        for (Utilisateur utilisateur : utilisateursWithoutAdmin) {
             byte[] faceBlob = utilisateur.getFaceImage();
             if (faceBlob == null || faceBlob.length == 0) {
                 System.err.println("L'utilisateur avec ID " + utilisateur.getId() + " n'a pas d'image.");

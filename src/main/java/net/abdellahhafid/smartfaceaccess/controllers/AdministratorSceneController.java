@@ -1147,9 +1147,9 @@ public class AdministratorSceneController {
         usersList.add(newUser);
         updateUserCount();
         clearAjouterUserForm();
-        ajouterUtilisateurPane.setVisible(false);
-
+        showPane(utilisateursPane);
         showAlert("Success", "User added successfully.", Alert.AlertType.INFORMATION);
+
     }
 
     // Handle refreshing the user list

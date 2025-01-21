@@ -121,7 +121,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="logsButton" alignment="TOP_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#handleSideBarButtonAction" prefWidth="168.0" style="-fx-border-radius: 8px;" styleClass="sideBarButton" text="Journaux" textFill="#f4ebff">
+                        <Button fx:id="logsButton" alignment="TOP_LEFT" graphicTextGap="12.0" mnemonicParsing="false" onAction="#handleSideBarButtonAction" prefWidth="168.0" style="-fx-border-radius: 8px;" styleClass="sideBarButton" text="Journaux" textFill="#f4ebff" visible="false" managed="false">
                            <padding>
                               <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
                            </padding>
